@@ -43,7 +43,7 @@
     font-family: 'Quicksand', system-ui, sans-serif;
     color: var(--ink);
     overflow-x: hidden;
-    background: #FFF1F5; /* Fallback */
+    background: #FFF1F5; 
   }
   
   /* VIBRANT MAGICAL BACKGROUND */
@@ -200,7 +200,7 @@
   
   .name-small {
     font-family: 'Quicksand', sans-serif; font-weight: 700;
-    letter-spacing: 5px; font-size: 1.1rem;
+    letter-spacing: 5px; font-size: 1.3rem; /* Made slightly larger to ensure it's clear */
     color: var(--jewel-deep); text-transform: uppercase;
   }
   
@@ -235,7 +235,7 @@
   
   .polaroid {
     background: #FFFFFF;
-    padding: 16px 16px 20px 16px; /* Thick white border around image */
+    padding: 16px 16px 20px 16px; 
     border-radius: 8px;
     box-shadow: 0 12px 30px rgba(0,0,0,0.15);
     position: relative; 
@@ -248,7 +248,7 @@
   .polaroid img {
     width: 100%; aspect-ratio: 1/1; object-fit: cover;
     border-radius: 4px;
-    margin-bottom: 15px; /* Pushes the caption down clearly */
+    margin-bottom: 15px; 
   }
   
   /* Explicitly standard flow for captions so they never get hidden */
@@ -387,7 +387,7 @@
       <img class="hero-img" src="https://i.postimg.cc/wTjCcmMx/IMG-20260920-123257-601.jpg" alt="Syed Hadeeqa Andrabi" />
     </div>
     
-    <!-- Names Structure (Ensures nothing is cut off) -->
+    <!-- Names Structure -->
     <div class="hero-names">
       <div class="crown-icon">♕</div>
       <div class="name-small">SYED</div>
@@ -500,10 +500,11 @@
 
 <script>
   /* ============================================================
-     AUDIO TOGGLE LOGIC
+     SHARE & AUDIO LOGIC
      ============================================================ */
   const bgMusic = document.getElementById('bgMusic');
   const musicBtn = document.getElementById('musicBtn');
+  const shareBtn = document.getElementById('shareBtn');
   
   musicBtn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -517,10 +518,6 @@
     }
   });
 
-  /* ============================================================
-     SHARE LOGIC
-     ============================================================ */
-  const shareBtn = document.getElementById('shareBtn');
   shareBtn.addEventListener('click', async (e) => {
     e.stopPropagation();
     const shareData = {
@@ -529,4 +526,164 @@
       url: window.location.href
     };
     if (navigator.share) {
-      try { await navigator.share(shareDat
+      try { await navigator.share(shareData); } catch (err) { console.log('Share dismissed'); }
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Link copied to clipboard! Share it with friends.');
+    }
+  });
+
+  /* ============================================================
+     FAST INTRO & BALLOON CURTAIN
+     ============================================================ */
+  const startScreen = document.getElementById('startScreen');
+  const startBtn = document.getElementById('startBtn');
+  const main = document.getElementById('main');
+  const balloonCurtain = document.getElementById('balloon-curtain');
+  const tapHint = document.getElementById('tapHint');
+
+  startBtn.addEventListener('click', () => {
+    // 1. Hide start screen
+    startScreen.style.opacity = '0';
+    setTimeout(() => { startScreen.style.display = 'none'; }, 500);
+    
+    // 2. Play Audio
+    bgMusic.muted = false;
+    bgMusic.play().then(() => { 
+      musicBtn.innerHTML = '🎵'; 
+      musicBtn.style.display = 'flex'; // Show pinned music button
+    }).catch(e => console.log(e));
+
+    // 3. Launch balloons immediately
+    launchBalloons();
+
+    // 4. Reveal main page smoothly while balloons are flying up
+    setTimeout(() => {
+      main.classList.add('show');
+      document.body.classList.remove('locked');
+      
+      // Auto firecrackers
+      setTimeout(() => {
+        firecracker(window.innerWidth/2, window.innerHeight*0.3);
+        firecracker(window.innerWidth*0.3, window.innerHeight*0.6);
+        firecracker(window.innerWidth*0.7, window.innerHeight*0.6);
+        tapHint.classList.add('show');
+      }, 300);
+
+      // Clean up balloons to save memory
+      setTimeout(() => { balloonCurtain.style.display = 'none'; }, 3000);
+      setTimeout(() => { tapHint.classList.remove('show'); }, 6000);
+    }, 600);
+  });
+
+  function launchBalloons() {
+    const colors = ['#FF85A2', '#E9DBFB', '#7FCBAE', '#F6DFA0', '#E4B34A', '#8B5FBF'];
+    const balloonCount = 60;
+    
+    for (let i = 0; i < balloonCount; i++) {
+      const b = document.createElement('div');
+      b.className = 'fly-balloon';
+      const left = -10 + Math.random() * 120;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const delay = Math.random() * 0.4;
+      const duration = 1.2 + Math.random() * 1;
+      const r1 = (Math.random() - 0.5) * 30;
+      const r2 = (Math.random() - 0.5) * 60;
+      const scale = 0.8 + Math.random() * 0.8;
+      
+      b.style.left = left + 'vw';
+      b.style.setProperty('--c', color);
+      b.style.setProperty('--r1', r1 + 'deg');
+      b.style.setProperty('--r2', r2 + 'deg');
+      b.style.setProperty('--s', scale);
+      b.style.animation = `flyUp ${duration}s ${delay}s cubic-bezier(0.4, 0, 0.2, 1) forwards`;
+      balloonCurtain.appendChild(b);
+    }
+  }
+
+  /* ============================================================
+     FIRECRACKER (CONFETTI) ENGINE ON TAP
+     ============================================================ */
+  const canvas = document.getElementById('fx');
+  const ctx = canvas.getContext('2d');
+  let W = canvas.width = window.innerWidth;
+  let H = canvas.height = window.innerHeight;
+
+  window.addEventListener('resize', () => {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  });
+
+  const particles = [];
+  const palette = ['#F6DFA0', '#E4B34A', '#FF85A2', '#8B5FBF', '#7FCBAE', '#FFFFFF'];
+
+  function firecracker(x, y) {
+    const count = 50 + Math.random() * 30;
+    for (let i = 0; i < count; i++) {
+      const angle = (Math.random() * Math.PI * 2);
+      const speed = 6 + Math.random() * 15;
+      particles.push({
+        x: x, y: y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        w: 4 + Math.random() * 8,
+        h: 6 + Math.random() * 10,
+        rot: Math.random() * Math.PI * 2,
+        vr: (Math.random() - 0.5) * 0.4,
+        color: palette[Math.floor(Math.random() * palette.length)],
+        life: 1, shape: Math.random() > 0.5 ? 'circle' : 'rect'
+      });
+    }
+  }
+
+  function renderFX() {
+    ctx.clearRect(0, 0, W, H);
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.vy += 0.3; p.vx *= 0.95; p.vy *= 0.95;
+      p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life -= 0.015;
+
+      if (p.life <= 0 || p.y > H + 20) { particles.splice(i, 1); continue; }
+
+      ctx.save();
+      ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.globalAlpha = Math.max(0, p.life); ctx.fillStyle = p.color;
+      if (p.shape === 'circle') {
+        ctx.beginPath(); ctx.arc(0, 0, p.w/2, 0, Math.PI * 2); ctx.fill();
+      } else {
+        ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      }
+      ctx.restore();
+    }
+    requestAnimationFrame(renderFX);
+  }
+  renderFX();
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.control-btn') || e.target.tagName === 'VIDEO' || e.target.id === 'startBtn' || e.target.id === 'shareBtn') return;
+    tapHint.classList.remove('show');
+    firecracker(e.clientX, e.clientY);
+  });
+
+  /* ============================================================
+     SMOOTH SCROLL REVEALS
+     ============================================================ */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target); 
+      }
+    });
+  }, { 
+    threshold: 0.1,
+    rootMargin: "0px 0px -50px 0px"
+  });
+
+  document.querySelectorAll('.fade-el').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
