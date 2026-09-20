@@ -84,7 +84,7 @@
   .music-btn:active { transform: scale(0.9); }
 
   /* ============================================================
-     INTRO ANIMATION (GALAXY -> SOLAR SYSTEM -> 7 STARS)
+     INTRO ANIMATION (7 STARS -> ZOOM)
      ============================================================ */
   #intro {
     position: fixed; inset: 0; z-index: 8000;
@@ -94,81 +94,40 @@
     transition: opacity 0.8s ease-in-out;
   }
 
-  /* 1. Milky Way */
-  .milky-way {
-    position: absolute;
-    width: 70vw; height: 70vw;
-    border-radius: 50%;
-    background: conic-gradient(from 0deg, transparent, rgba(139,95,191,0.6), transparent 40%, rgba(246,223,160,0.6), transparent 80%);
-    filter: blur(30px);
-    opacity: 0;
-    animation: seqGalaxy 3.5s ease-in-out forwards;
-  }
-
-  /* 2. Solar System */
-  .solar-system {
-    position: absolute;
-    width: 50vw; height: 50vw;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: inset 0 0 40px rgba(246,223,160,0.05);
-    opacity: 0;
-    display: flex; align-items: center; justify-content: center;
-    animation: seqSolar 3.5s 3.2s ease-in-out forwards;
-  }
-  .solar-system::before {
-    content: ""; position: absolute;
-    width: 12vw; height: 12vw; border-radius: 50%;
-    background: radial-gradient(circle, #FFF8DC, #E4B34A);
-    box-shadow: 0 0 50px #E4B34A;
-  }
-  .solar-system::after {
-    content: ""; position: absolute; top: 0; left: 50%;
-    width: 10px; height: 10px; border-radius: 50%;
-    background: #7FCBAE;
-    box-shadow: 0 0 15px #7FCBAE;
-    transform: translate(-50%, -50%);
-  }
-
-  /* 3. Constellation 7 */
+  /* Constellation 7 */
   .constellation {
     position: relative;
     width: 180px; height: 260px;
     z-index: 2;
     opacity: 0;
-    animation: seqStars 4.5s 6.5s ease-in-out forwards;
   }
+  .constellation.animate { animation: seqStars 3.5s ease-in-out forwards; }
+
   .star {
     position: absolute;
     width: 8px; height: 8px;
     background: #FFF;
     border-radius: 50%;
     box-shadow: 0 0 15px 4px rgba(246,223,160,0.9);
+    animation: twinkle 0.8s infinite alternate;
   }
-  .star:nth-child(1) { top: 0%; left: 0%; }
-  .star:nth-child(2) { top: 0%; left: 33%; }
-  .star:nth-child(3) { top: 0%; left: 66%; }
-  .star:nth-child(4) { top: 0%; left: 100%; }
-  .star:nth-child(5) { top: 33%; left: 75%; }
-  .star:nth-child(6) { top: 66%; left: 50%; }
-  .star:nth-child(7) { top: 100%; left: 25%; }
+  .star:nth-child(1) { top: 0%; left: 0%; animation-delay: 0s; }
+  .star:nth-child(2) { top: 0%; left: 33%; animation-delay: 0.1s; }
+  .star:nth-child(3) { top: 0%; left: 66%; animation-delay: 0.2s; }
+  .star:nth-child(4) { top: 0%; left: 100%; animation-delay: 0.3s; }
+  .star:nth-child(5) { top: 33%; left: 75%; animation-delay: 0.4s; }
+  .star:nth-child(6) { top: 66%; left: 50%; animation-delay: 0.5s; }
+  .star:nth-child(7) { top: 100%; left: 25%; animation-delay: 0.6s; }
 
-  @keyframes seqGalaxy {
-    0% { opacity: 0; transform: scale(0.2) rotate(0deg); }
-    30% { opacity: 1; transform: scale(1) rotate(60deg); }
-    80% { opacity: 1; transform: scale(1.5) rotate(120deg); }
-    100% { opacity: 0; transform: scale(3) rotate(180deg); }
-  }
-  @keyframes seqSolar {
-    0% { opacity: 0; transform: scale(0.2) rotate(0deg); }
-    30% { opacity: 1; transform: scale(1) rotate(45deg); }
-    80% { opacity: 1; transform: scale(1.5) rotate(90deg); }
-    100% { opacity: 0; transform: scale(4) rotate(135deg); }
-  }
   @keyframes seqStars {
     0% { opacity: 0; transform: scale(0.5); }
     20%, 70% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(15); } 
+    100% { opacity: 0; transform: scale(15); } /* Massive zoom past stars */
+  }
+
+  @keyframes twinkle {
+    from { opacity: 0.6; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1.2); }
   }
 
   /* ============================================================
@@ -181,24 +140,23 @@
   }
   .fly-balloon {
     position: absolute;
-    bottom: -200px;
-    width: 60px; height: 80px;
+    bottom: -250px;
+    width: 100px; height: 130px;
     background: radial-gradient(circle at 30% 30%, #fff, var(--c) 60%);
     border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
     box-shadow: inset -5px -5px 15px rgba(0,0,0,0.1);
-    opacity: 0.9;
     will-change: transform;
   }
   .fly-balloon::after {
-    content: ""; position: absolute; bottom: -8px; left: 50%;
+    content: ""; position: absolute; bottom: -12px; left: 50%;
     transform: translateX(-50%);
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-bottom: 8px solid var(--c);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 12px solid var(--c);
   }
   @keyframes flyUp {
-    0% { transform: translateY(0) rotate(var(--r1)); }
-    100% { transform: translateY(-120vh) rotate(var(--r2)); }
+    0% { transform: translateY(0) scale(var(--s)) rotate(var(--r1)); }
+    100% { transform: translateY(-150vh) scale(var(--s)) rotate(var(--r2)); }
   }
 
   /* ============================================================
@@ -286,7 +244,6 @@
     border-radius: 4px;
     box-shadow: var(--shadow-paper);
     position: relative;
-    /* Scroll reveal defaults */
     opacity: 0;
     transform: translateY(30px) rotate(0deg);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
@@ -442,7 +399,7 @@
 </head>
 <body class="locked">
 
-<!-- Audio Element (Autoplay but muted by default) -->
+<!-- Audio Element (Autoplay but muted by default - user clicks to unmute) -->
 <audio id="bgMusic" src="your-music-file.mp3" loop autoplay muted playsinline></audio>
 
 <!-- Pinned Music Button -->
@@ -457,13 +414,10 @@
 <canvas id="fx"></canvas>
 
 <!-- ==========================================
-     INTRO OVERLAY (ASTRONOMY THEME)
+     INTRO OVERLAY (7 STARS -> ZOOM)
      ========================================== -->
 <div id="intro">
-  <div class="milky-way" id="milkyWay"></div>
-  <div class="solar-system" id="solarSystem"></div>
   <div class="constellation" id="constellation">
-    <!-- 7 Stars -->
     <div class="star"></div><div class="star"></div><div class="star"></div>
     <div class="star"></div><div class="star"></div><div class="star"></div>
     <div class="star"></div>
@@ -539,22 +493,26 @@
     </div>
   </section>
 
-  <!-- 3 VIDEOS SECTION -->
+  <!-- 3 VIDEOS SECTION WITH CAPTIONS -->
   <section class="container">
     <h2 class="section-title fade-el">Magical Moments</h2>
     <div class="video-grid">
+      
       <div class="video-wrapper fade-el">
         <video src="video1.mp4" controls preload="metadata"></video>
         <p class="video-cap">A little clip of pure joy</p>
       </div>
+      
       <div class="video-wrapper fade-el">
         <video src="video2.mp4" controls preload="metadata"></video>
         <p class="video-cap">Laughter, captured forever</p>
       </div>
+      
       <div class="video-wrapper fade-el">
         <video src="video3.mp4" controls preload="metadata"></video>
         <p class="video-cap">Making beautiful memories</p>
       </div>
+
     </div>
   </section>
 
@@ -607,7 +565,7 @@
   const bgMusic = document.getElementById('bgMusic');
   const musicBtn = document.getElementById('musicBtn');
   
-  // Starts muted due to browser policies. Clicking the button unmutes/plays.
+  // Audio starts muted. Clicking the button unmutes/plays it.
   musicBtn.addEventListener('click', (e) => {
     e.stopPropagation(); // Prevent firecracker trigger
     if (bgMusic.muted || bgMusic.paused) {
@@ -621,30 +579,35 @@
   });
 
   /* ============================================================
-     INTRO TIMING & BALLOON CURTAIN
+     DIRECT INTRO TIMING & BALLOON CURTAIN
      ============================================================ */
   const intro = document.getElementById('intro');
   const main = document.getElementById('main');
   const balloonCurtain = document.getElementById('balloon-curtain');
   const tapHint = document.getElementById('tapHint');
 
-  // The CSS animations on Milky Way, Solar System, and Stars take 11s total.
-  // We trigger the balloon curtain at 10.8s
-  setTimeout(() => {
-    launchBalloons();
+  // Trigger directly on load without waiting for a button click
+  window.addEventListener('load', () => {
+    // 1. Start Constellation 7 stars animation immediately
+    document.getElementById('constellation').classList.add('animate');
     
-    // Hide intro, show main slightly after balloons start covering
+    // 2. Launch balloons to act as a curtain reveal (at 2.8s, as stars zoom past)
+    setTimeout(() => {
+      launchBalloons();
+    }, 2800); 
+
+    // 3. Hide intro, show main slightly after balloons start moving up (at 3.4s)
     setTimeout(() => {
       intro.style.opacity = '0';
       main.classList.add('show');
       document.body.classList.remove('locked'); // unlock scroll
       
-      // Auto-trigger center firecrackers on reveal
+      // Auto-trigger center firecrackers on reveal to make it festive
       setTimeout(() => {
         firecracker(window.innerWidth/2, window.innerHeight*0.3);
         firecracker(window.innerWidth*0.3, window.innerHeight*0.6);
         firecracker(window.innerWidth*0.7, window.innerHeight*0.6);
-        tapHint.classList.add('show'); // show "Tap anywhere" text
+        tapHint.classList.add('show'); // Show "Tap anywhere" instruction
       }, 500);
 
       // Clean up intro node
@@ -654,32 +617,32 @@
       // Hide tap hint after a few seconds
       setTimeout(() => { tapHint.classList.remove('show'); }, 6000);
 
-    }, 600);
-  }, 10800); 
+    }, 3400);
+  });
 
   function launchBalloons() {
     const colors = ['#F3A79C', '#E9DBFB', '#7FCBAE', '#F6DFA0', '#E4B34A', '#8B5FBF'];
     const w = window.innerWidth;
-    const balloonCount = Math.floor(w / 30); // scale amount based on screen width
+    const balloonCount = 60; // Dense curtain of balloons
     
     for (let i = 0; i < balloonCount; i++) {
       const b = document.createElement('div');
       b.className = 'fly-balloon';
       
-      // Randomize properties
-      const left = Math.random() * 100; // vw
+      // Randomize properties to cover the screen
+      const left = -10 + Math.random() * 120; // vw (spread slightly off screen)
       const color = colors[Math.floor(Math.random() * colors.length)];
-      const delay = Math.random() * 0.5; // s
-      const duration = 1.5 + Math.random() * 1; // 1.5s to 2.5s
-      const r1 = (Math.random() - 0.5) * 20; // start rotation
-      const r2 = (Math.random() - 0.5) * 40; // end rotation
-      const scale = 0.7 + Math.random() * 0.6;
+      const delay = Math.random() * 0.8; // s
+      const duration = 1.8 + Math.random() * 1.5; // fly time
+      const r1 = (Math.random() - 0.5) * 30; // start rotation
+      const r2 = (Math.random() - 0.5) * 60; // end rotation
+      const scale = 0.8 + Math.random() * 0.8; // vary sizes
       
       b.style.left = left + 'vw';
       b.style.setProperty('--c', color);
       b.style.setProperty('--r1', r1 + 'deg');
       b.style.setProperty('--r2', r2 + 'deg');
-      b.style.transform = `scale(${scale})`;
+      b.style.setProperty('--s', scale);
       b.style.animation = `flyUp ${duration}s ${delay}s cubic-bezier(0.4, 0, 0.2, 1) forwards`;
       
       balloonCurtain.appendChild(b);
