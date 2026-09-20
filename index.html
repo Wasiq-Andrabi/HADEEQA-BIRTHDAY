@@ -3,18 +3,27 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#0B0616" />
+<meta name="theme-color" content="#1a0b2e" />
+
+<!-- Sharing Meta Tags for WhatsApp/Social Media -->
+<meta property="og:title" content="Hadeeqa Turns 7 ✨" />
+<meta property="og:description" content="🎂✨ Hadeeqa is turning 7! Come celebrate her magical birthday with us 💜" />
+<meta property="og:image" content="https://i.postimg.cc/wTjCcmMx/IMG-20260920-123257-601.jpg" />
+<meta property="og:type" content="website" />
+
 <title>Hadeeqa Turns 7 ✦ Magical Birthday</title>
+
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Caveat:wght@600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Caveat:wght@600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+
 <style>
   /* ============================================================
-     DESIGN TOKENS & PERFORMANCE OPTIMIZATIONS
+     DESIGN TOKENS
      ============================================================ */
   :root {
-    --ink: #1F1533;
-    --paper: #FFFFFF;
+    --ink: #FFFFFF;
     --gold-light: #F6DFA0;
     --gold: #E4B34A;
     --gold-deep: #C9932E;
@@ -24,8 +33,8 @@
     --jewel-deep: #5B3B8C;
     
     --safe-bottom: env(safe-area-inset-bottom, 0px);
-    --shadow-soft: 0 14px 30px rgba(11, 6, 22, 0.15);
-    --shadow-paper: 0 10px 25px rgba(31, 21, 51, 0.2);
+    --shadow-soft: 0 14px 30px rgba(0, 0, 0, 0.4);
+    --shadow-paper: 0 10px 25px rgba(0, 0, 0, 0.5);
   }
 
   html { scroll-behavior: smooth; }
@@ -34,19 +43,9 @@
     margin: 0; padding: 0; min-height: 100vh;
     font-family: 'Quicksand', system-ui, sans-serif;
     color: var(--ink);
-    background-color: #0B0616;
     overflow-x: hidden;
+    background-color: #0A0410; /* Fallback deep space black */
   }
-  
-  body::before {
-    content: "";
-    position: fixed; inset: 0; z-index: -1;
-    background-image: 
-      radial-gradient(circle at 10% 20%, rgba(139, 95, 191, 0.15), transparent 40%),
-      radial-gradient(circle at 90% 80%, rgba(246, 223, 160, 0.1), transparent 40%);
-    pointer-events: none;
-  }
-  
   body.locked { overflow: hidden; }
 
   h1, h2, h3 { font-family: 'Fraunces', serif; margin: 0; }
@@ -54,78 +53,150 @@
   img, video { max-width: 100%; display: block; }
 
   /* ============================================================
-     FX CANVAS (Firecrackers & Confetti)
+     DYNAMIC BACKGROUND LAYERS (Enchanted Princess Night)
      ============================================================ */
-  #fx {
-    position: fixed; inset: 0; pointer-events: none; z-index: 9999;
-    width: 100vw; height: 100vh;
+  #bg-layers {
+    position: fixed; inset: 0; z-index: -3;
+    pointer-events: none;
+  }
+  .bg-layer {
+    position: absolute; inset: 0;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+  }
+  .bg-layer.active { opacity: 1; }
+
+  /* Section Themes */
+  #bg-hero    { background: radial-gradient(circle at 50% 30%, #2b124c 0%, #150629 60%, #0a0314 100%); }
+  #bg-photos  { background: radial-gradient(circle at 50% 50%, #1f0b3b 0%, #0d041a 70%); }
+  #bg-videos  { background: radial-gradient(circle at 50% 50%, #150629 0%, #080212 80%); }
+  #bg-cake    { background: radial-gradient(circle at 50% 70%, #3a1637 0%, #1a0620 70%); }
+  #bg-message { background: radial-gradient(circle at 50% 50%, #251247 0%, #0a0314 80%); }
+
+  /* Subtle vignette over everything */
+  .vignette {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background: radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.6) 100%);
   }
 
-  /* ============================================================
-     PINNED AUDIO BUTTON
-     ============================================================ */
-  .music-btn {
-    position: fixed;
-    bottom: calc(20px + var(--safe-bottom));
-    right: 20px;
-    z-index: 9000;
-    width: 52px; height: 52px;
+  /* Fireflies & Scattered Stars */
+  .fireflies { position: fixed; inset: 0; z-index: -2; pointer-events: none; }
+  .firefly {
+    position: absolute;
     border-radius: 50%;
-    border: none;
-    background: linear-gradient(135deg, var(--gold-light), var(--gold-deep));
-    color: #1F1533;
-    font-size: 1.5rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: transform 0.2s ease;
+    background: var(--gold-light);
+    box-shadow: 0 0 10px 2px var(--gold);
+    animation: floatFly 8s infinite alternate ease-in-out;
+    opacity: 0.6;
   }
-  .music-btn:active { transform: scale(0.9); }
+  @keyframes floatFly {
+    0% { transform: translateY(0px) translateX(0px) scale(0.8); opacity: 0.3; }
+    100% { transform: translateY(-30px) translateX(20px) scale(1.2); opacity: 0.8; }
+  }
+
+  /* Occasional Shooting Stars */
+  .shooting-star {
+    position: absolute; width: 120px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+    box-shadow: 0 0 10px var(--gold);
+    opacity: 0;
+    transform: rotate(-35deg);
+    animation: shoot 12s infinite;
+  }
+  .shooting-star:nth-child(2) { top: 20%; left: 80%; animation-delay: 5s; animation-duration: 15s; }
+  @keyframes shoot {
+    0% { transform: translate(100vw, -20vh) rotate(-35deg); opacity: 0; }
+    5% { opacity: 1; }
+    10% { transform: translate(-50vw, 80vh) rotate(-35deg); opacity: 0; }
+    100% { opacity: 0; }
+  }
 
   /* ============================================================
-     INTRO ANIMATION (7 STARS -> ZOOM)
+     INTERACTION OVERLAY
+     ============================================================ */
+  #startScreen {
+    position: fixed; inset: 0; z-index: 10000;
+    background: #030108;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    transition: opacity 0.5s ease;
+  }
+  .start-btn {
+    padding: 16px 36px;
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem; font-weight: 700;
+    color: #030108;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    border: none; border-radius: 50px; cursor: pointer;
+    box-shadow: 0 0 30px rgba(228,179,74,0.4);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(228,179,74,0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(228,179,74,0.7); }
+  }
+
+  /* ============================================================
+     INTRO ANIMATION (PUNCHY: Milky Way -> Solar -> 7 Stars -> Zoom)
      ============================================================ */
   #intro {
-    position: fixed; inset: 0; z-index: 8000;
+    position: fixed; inset: 0; z-index: 9999;
     background: #030108;
-    display: flex; align-items: center; justify-content: center;
+    display: none; align-items: center; justify-content: center;
     overflow: hidden;
-    transition: opacity 0.8s ease-in-out;
+  }
+  
+  .milky-way {
+    position: absolute; width: 80vw; height: 80vw; border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent, rgba(139,95,191,0.8), transparent 40%, rgba(246,223,160,0.8), transparent 80%);
+    filter: blur(20px); opacity: 0;
+  }
+  .solar-system {
+    position: absolute; width: 60vw; height: 60vw; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2); box-shadow: inset 0 0 40px rgba(246,223,160,0.1);
+    opacity: 0; display: flex; align-items: center; justify-content: center;
+  }
+  .solar-system::before {
+    content: ""; position: absolute; width: 15vw; height: 15vw; border-radius: 50%;
+    background: radial-gradient(circle, #FFF8DC, #E4B34A); box-shadow: 0 0 50px #E4B34A;
+  }
+  .solar-system::after {
+    content: ""; position: absolute; top: 0; left: 50%; width: 12px; height: 12px; border-radius: 50%;
+    background: #7FCBAE; box-shadow: 0 0 20px #7FCBAE; transform: translate(-50%, -50%);
   }
 
-  .constellation {
-    position: relative;
-    width: 180px; height: 260px;
-    z-index: 2;
-    opacity: 0;
-  }
-  .constellation.animate { animation: seqStars 3.5s ease-in-out forwards; }
-
+  .constellation { position: relative; width: 180px; height: 260px; z-index: 2; opacity: 0; }
   .star {
-    position: absolute;
-    width: 8px; height: 8px;
-    background: #FFF;
-    border-radius: 50%;
-    box-shadow: 0 0 15px 4px rgba(246,223,160,0.9);
-    animation: twinkle 0.8s infinite alternate;
+    position: absolute; width: 8px; height: 8px; background: #FFF; border-radius: 50%;
+    box-shadow: 0 0 15px 5px rgba(246,223,160,0.9);
   }
-  .star:nth-child(1) { top: 0%; left: 0%; animation-delay: 0s; }
-  .star:nth-child(2) { top: 0%; left: 33%; animation-delay: 0.1s; }
-  .star:nth-child(3) { top: 0%; left: 66%; animation-delay: 0.2s; }
-  .star:nth-child(4) { top: 0%; left: 100%; animation-delay: 0.3s; }
-  .star:nth-child(5) { top: 33%; left: 75%; animation-delay: 0.4s; }
-  .star:nth-child(6) { top: 66%; left: 50%; animation-delay: 0.5s; }
-  .star:nth-child(7) { top: 100%; left: 25%; animation-delay: 0.6s; }
+  .star:nth-child(1) { top: 0%; left: 0%; }
+  .star:nth-child(2) { top: 0%; left: 33%; }
+  .star:nth-child(3) { top: 0%; left: 66%; }
+  .star:nth-child(4) { top: 0%; left: 100%; }
+  .star:nth-child(5) { top: 33%; left: 75%; }
+  .star:nth-child(6) { top: 66%; left: 50%; }
+  .star:nth-child(7) { top: 100%; left: 25%; }
 
-  @keyframes seqStars {
-    0% { opacity: 0; transform: scale(0.5); }
-    20%, 70% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(15); }
+  /* Fast, Punchy Keyframes */
+  .milky-way.animate { animation: fastGalaxy 1.2s ease-in-out forwards; }
+  .solar-system.animate { animation: fastSolar 1.2s 1s ease-in-out forwards; }
+  .constellation.animate { animation: fastStars 2s 2s ease-in-out forwards; }
+
+  @keyframes fastGalaxy {
+    0% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1) rotate(45deg); }
+    100% { opacity: 0; transform: scale(2.5) rotate(90deg); }
   }
-
-  @keyframes twinkle {
-    from { opacity: 0.6; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1.2); }
+  @keyframes fastSolar {
+    0% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1) rotate(45deg); }
+    100% { opacity: 0; transform: scale(3) rotate(90deg); }
+  }
+  @keyframes fastStars {
+    0% { opacity: 0; transform: scale(0.8); }
+    15%, 70% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(15); } 
   }
 
   /* ============================================================
@@ -133,24 +204,19 @@
      ============================================================ */
   #balloon-curtain {
     position: fixed; inset: 0; z-index: 7000;
-    pointer-events: none;
-    overflow: hidden;
+    pointer-events: none; overflow: hidden;
   }
   .fly-balloon {
-    position: absolute;
-    bottom: -250px;
-    width: 100px; height: 130px;
+    position: absolute; bottom: -250px; width: 90px; height: 120px;
     background: radial-gradient(circle at 30% 30%, #fff, var(--c) 60%);
     border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-    box-shadow: inset -5px -5px 15px rgba(0,0,0,0.1);
+    box-shadow: inset -5px -5px 15px rgba(0,0,0,0.15), 0 10px 20px rgba(0,0,0,0.3);
     will-change: transform;
   }
   .fly-balloon::after {
     content: ""; position: absolute; bottom: -12px; left: 50%;
     transform: translateX(-50%);
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-bottom: 12px solid var(--c);
+    border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 12px solid var(--c);
   }
   @keyframes flyUp {
     0% { transform: translateY(0) scale(var(--s)) rotate(var(--r1)); }
@@ -158,250 +224,256 @@
   }
 
   /* ============================================================
+     FLOATING CONTROLS (Share & Music)
+     ============================================================ */
+  .floating-controls {
+    position: fixed; bottom: calc(20px + var(--safe-bottom)); right: 20px;
+    display: flex; gap: 12px; z-index: 9000;
+    opacity: 0; transition: opacity 1s ease; pointer-events: none;
+  }
+  .floating-controls.show { opacity: 1; pointer-events: auto; }
+
+  .control-btn {
+    width: 50px; height: 50px; border-radius: 50%; border: none;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold-deep));
+    color: #1F1533; font-size: 1.4rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .control-btn:active { transform: scale(0.9); }
+  .control-btn:hover { box-shadow: 0 6px 20px rgba(228,179,74,0.6); }
+
+  /* ============================================================
      MAIN PAGE LAYOUT
      ============================================================ */
-  #main {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 1s ease-in-out;
-  }
-  #main.show {
-    opacity: 1;
-    visibility: visible;
-  }
+  #main { opacity: 0; visibility: hidden; transition: opacity 1s ease-in-out; }
+  #main.show { opacity: 1; visibility: visible; }
 
   .container { max-width: 650px; margin: 0 auto; padding: 0 20px; }
-  section { padding: 60px 0; }
+  section { padding: 80px 0; }
 
-  /* --- HERO SECTION --- */
+  /* --- HERO SECTION (Storybook Princess Theme) --- */
   .hero {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 80px 20px 40px;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; padding: 80px 20px 40px;
   }
 
-  .bunting-row {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    margin-bottom: 8px;
+  .hero-ornament-top {
+    color: var(--gold-light); font-size: 1.2rem;
+    letter-spacing: 6px; margin-bottom: 15px;
+    text-shadow: 0 0 10px rgba(246,223,160,0.6);
   }
-  .bunting-row.bottom { margin-bottom: 35px; }
 
-  .bunting-card {
-    background: linear-gradient(135deg, var(--accent-pink), #E8877A);
-    color: white;
-    font-family: 'Fraunces', serif;
-    font-weight: 900;
-    font-size: 1.2rem;
-    width: 36px; height: 46px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 4px 4px 12px 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    border-bottom: 2px solid rgba(255,255,255,0.3);
+  /* Ribbon heading */
+  .happy-text {
+    font-family: 'Quicksand', sans-serif; font-weight: 700;
+    letter-spacing: 6px; color: var(--gold-light);
+    font-size: 1.1rem; text-transform: uppercase;
+    margin-bottom: 5px;
   }
-  .bunting-card.jewel { background: linear-gradient(135deg, var(--jewel), var(--jewel-deep)); }
+  .birthday-ribbon {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--jewel-deep), var(--jewel));
+    padding: 10px 40px;
+    color: #fff;
+    font-family: 'Fraunces', serif; font-weight: 900;
+    font-size: 1.6rem; letter-spacing: 2px;
+    position: relative;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    margin-bottom: 30px;
+    clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0 50%);
+  }
 
-  .hero-img {
+  /* Hero Photo */
+  .hero-photo-wrapper {
+    position: relative;
+    padding: 8px;
+    background: linear-gradient(135deg, var(--gold-light), var(--jewel), var(--gold-deep));
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    margin-bottom: 30px;
+    max-width: 300px;
     width: 100%;
-    max-width: 340px;
+  }
+  .hero-photo-wrapper img {
+    border-radius: 14px;
     aspect-ratio: 3/4;
     object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-    border: 4px solid var(--gold-light);
-    margin-bottom: 25px;
   }
 
-  .hero-name {
-    font-family: 'Fraunces', serif;
-    font-weight: 900;
-    font-size: clamp(2rem, 8vw, 3rem);
-    letter-spacing: 1px;
+  /* Princess Typography for Name */
+  .name-wrapper { position: relative; margin-bottom: 25px; }
+  .name-small {
+    font-family: 'Quicksand', sans-serif; font-weight: 600;
+    letter-spacing: 6px; font-size: 0.9rem;
+    color: var(--accent-lilac); text-transform: uppercase;
+  }
+  .name-main {
+    font-family: 'Berkshire Swash', cursive;
+    font-size: clamp(3.5rem, 12vw, 5rem);
     background: linear-gradient(100deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-light) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
+    background-size: 200% auto;
+    -webkit-background-clip: text; background-clip: text;
     color: transparent;
-    text-shadow: 0 4px 20px rgba(228,179,74,0.2);
-    margin: 0;
+    line-height: 1.2;
+    position: relative;
+    text-shadow: 0 4px 20px rgba(228,179,74,0.3);
+    margin: 5px 0;
+    animation: goldShine 4s linear infinite;
+  }
+  @keyframes goldShine { to { background-position: 200% center; } }
+  
+  .crown-svg {
+    position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
+    width: 45px; height: auto;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+  }
+
+  /* 7 Magical Years Badge */
+  .badge-7 {
+    display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    border: 2px dashed var(--gold);
+    background: rgba(21, 6, 41, 0.7);
+    margin: 10px auto;
+    box-shadow: 0 0 25px rgba(228,179,74,0.25);
+    backdrop-filter: blur(5px);
+  }
+  .badge-number {
+    font-family: 'Berkshire Swash', cursive;
+    font-size: 3rem; color: var(--gold-light); line-height: 1;
+    text-shadow: 0 0 15px rgba(246,223,160,0.5);
+  }
+  .badge-text {
+    font-family: 'Quicksand', sans-serif; font-weight: 700;
+    font-size: 0.65rem; letter-spacing: 2px; color: var(--accent-lilac);
+    text-align: center; line-height: 1.2; margin-top: 4px;
   }
 
   /* --- SCRAPBOOK PHOTO CARDS (Polaroids) --- */
-  .cards-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 55px;
-    padding: 20px 0;
-  }
+  .cards-grid { display: flex; flex-direction: column; gap: 60px; padding: 20px 0; }
   
   .polaroid {
-    background: var(--paper);
-    padding: 14px 14px 45px;
-    border-radius: 4px;
-    box-shadow: var(--shadow-paper);
-    position: relative;
-    opacity: 0;
-    transform: translateY(30px) rotate(0deg);
+    background: var(--paper); padding: 14px 14px 45px;
+    border-radius: 4px; box-shadow: var(--shadow-paper);
+    position: relative; opacity: 0; transform: translateY(30px) rotate(0deg);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-    will-change: transform, opacity;
   }
-  
   .polaroid:nth-child(odd).in-view { opacity: 1; transform: translateY(0) rotate(-3deg); }
   .polaroid:nth-child(even).in-view { opacity: 1; transform: translateY(0) rotate(3deg); }
   
   .polaroid::before {
-    content: ""; position: absolute; top: -12px; left: 50%;
+    content: ""; position: absolute; top: -14px; left: 50%;
     transform: translateX(-50%) rotate(-4deg);
-    width: 85px; height: 26px;
-    background: rgba(255,255,255,0.65);
+    width: 90px; height: 30px;
+    background: rgba(255,255,255,0.75);
     border: 1px solid rgba(0,0,0,0.05);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-    z-index: 2;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 2;
   }
   .polaroid:nth-child(even)::before { transform: translateX(-50%) rotate(4deg); }
 
   .polaroid img {
-    width: 100%;
-    aspect-ratio: 1/1;
-    object-fit: cover;
-    border-radius: 2px;
-    background: #E9DBFB;
+    width: 100%; aspect-ratio: 1/1; object-fit: cover;
+    border-radius: 2px; background: #E9DBFB;
   }
-  
   .polaroid-cap {
-    position: absolute;
-    bottom: 12px; left: 0; right: 0;
-    text-align: center;
-    font-family: 'Caveat', cursive;
-    font-size: 1.5rem;
-    color: var(--ink);
-    font-weight: 700;
+    position: absolute; bottom: 12px; left: 0; right: 0;
+    text-align: center; font-family: 'Caveat', cursive;
+    font-size: 1.5rem; color: #1F1533; font-weight: 700;
   }
 
   /* --- VIDEOS SECTION --- */
   .section-title {
-    color: var(--gold-light);
-    text-align: center;
-    font-size: 2.2rem;
-    margin-bottom: 30px;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    color: var(--gold-light); text-align: center; font-size: 2.4rem;
+    margin-bottom: 40px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    font-family: 'Berkshire Swash', cursive;
   }
-  .video-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 45px;
-  }
+  .video-grid { display: grid; grid-template-columns: 1fr; gap: 45px; }
   .video-wrapper {
-    background: #1A1230;
-    border-radius: 12px;
-    padding: 12px;
-    border: 1px solid rgba(246,223,160,0.15);
-    box-shadow: var(--shadow-soft);
-    opacity: 0; transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    background: rgba(26, 18, 48, 0.8); border-radius: 12px; padding: 12px;
+    border: 1px solid rgba(246,223,160,0.2); box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(10px);
+    opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out;
   }
   .video-wrapper.in-view { opacity: 1; transform: translateY(0); }
-
-  .video-wrapper video {
-    width: 100%;
-    border-radius: 8px;
-    aspect-ratio: 16/9;
-    background: #000;
-  }
+  .video-wrapper video { width: 100%; border-radius: 8px; aspect-ratio: 16/9; background: #000; }
   .video-cap {
-    margin-top: 15px;
-    text-align: center;
-    font-family: 'Caveat', cursive;
-    font-size: 1.4rem;
-    color: var(--accent-lilac);
+    margin-top: 15px; text-align: center; font-family: 'Caveat', cursive;
+    font-size: 1.4rem; color: var(--accent-lilac);
   }
 
   /* --- CAKE SECTION --- */
   .cake-wrapper {
-    text-align: center;
-    background: rgba(255,255,255,0.03);
-    padding: 50px 20px;
-    border-radius: 30px;
-    opacity: 0; transform: scale(0.95);
+    text-align: center; background: rgba(255,255,255,0.03); padding: 50px 20px;
+    border-radius: 30px; opacity: 0; transform: scale(0.95);
     transition: opacity 1s ease-out, transform 1s ease-out;
   }
   .cake-wrapper.in-view { opacity: 1; transform: scale(1); }
-  
-  .cake-svg {
-    width: 100%;
-    max-width: 320px;
-    height: auto;
-    margin: 0 auto;
-  }
+  .cake-svg { width: 100%; max-width: 320px; height: auto; margin: 0 auto; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));}
 
   /* --- MESSAGE SECTION --- */
   .message-box {
-    background: var(--accent-lilac);
-    color: var(--ink);
-    padding: 40px 30px;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: var(--shadow-soft);
+    background: linear-gradient(135deg, var(--accent-lilac), #D8C4F5);
+    color: #1F1533; padding: 40px 30px; border-radius: 20px;
+    text-align: center; box-shadow: var(--shadow-soft);
     opacity: 0; transform: translateY(30px);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
   }
   .message-box.in-view { opacity: 1; transform: translateY(0); }
+  .message-box h3 { font-family: 'Berkshire Swash', cursive; font-size: 2.2rem; color: var(--jewel-deep); margin-bottom: 15px; }
+  .message-box p { font-size: 1.1rem; font-weight: 700; }
 
-  .message-box h3 {
-    font-size: 1.8rem;
-    color: var(--jewel-deep);
-    margin-bottom: 15px;
-  }
-  .message-box p {
-    font-size: 1.1rem;
-    font-weight: 700;
-  }
-
-  footer {
-    text-align: center;
-    padding: 40px 20px calc(80px + var(--safe-bottom));
-    color: rgba(255,255,255,0.4);
-    font-size: 0.9rem;
-  }
+  footer { text-align: center; padding: 40px 20px calc(80px + var(--safe-bottom)); color: rgba(255,255,255,0.5); font-size: 0.9rem; }
   
+  /* Tap hint */
   .tap-hint {
-    position: fixed;
-    bottom: 30px; left: 50%;
-    transform: translateX(-50%);
-    color: var(--gold-light);
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    pointer-events: none;
-    z-index: 10000;
-    opacity: 0;
-    transition: opacity 0.5s;
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    color: var(--gold-light); font-family: 'Quicksand', sans-serif; font-weight: 700;
+    font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;
+    pointer-events: none; z-index: 10000; opacity: 0; transition: opacity 0.5s;
     text-shadow: 0 2px 10px rgba(0,0,0,0.8);
   }
-  .tap-hint.show {
-    opacity: 0.8;
-    animation: pulseHint 2s infinite;
-  }
+  .tap-hint.show { opacity: 0.8; animation: pulseHint 2s infinite; }
   @keyframes pulseHint {
     0%, 100% { opacity: 0.4; transform: translateX(-50%) scale(0.95); }
     50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
   }
+
+  /* Canvas FX */
+  #fx { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+
 </style>
 </head>
 <body class="locked">
 
-<!-- Audio Element with your uploaded file -->
-<audio id="bgMusic" src="celebration_background_music_no_copyright_music_free_music.m4a" loop autoplay muted playsinline></audio>
+<!-- Audio Element -->
+<audio id="bgMusic" src="celebration_background_music_no_copyright_music_free_music.m4a" loop playsinline></audio>
 
-<!-- Pinned Music Button -->
-<button id="musicBtn" class="music-btn" aria-label="Toggle Music">🔇</button>
+<!-- Background Layers for Scroll Transition -->
+<div id="bg-layers">
+  <div id="bg-hero" class="bg-layer active"></div>
+  <div id="bg-photos" class="bg-layer"></div>
+  <div id="bg-videos" class="bg-layer"></div>
+  <div id="bg-cake" class="bg-layer"></div>
+  <div id="bg-message" class="bg-layer"></div>
+</div>
+<div class="vignette"></div>
+
+<!-- Fireflies / Particles -->
+<div class="fireflies" id="fireflies"></div>
+<div class="shooting-star"></div>
+<div class="shooting-star"></div>
 
 <!-- Tap Hint -->
 <div id="tapHint" class="tap-hint">Tap anywhere to burst!</div>
+
+<!-- Floating Controls (Share & Music) -->
+<div class="floating-controls" id="floatingControls">
+  <button id="shareBtn" class="control-btn" title="Share">🔗</button>
+  <button id="musicBtn" class="control-btn" title="Toggle Music">🔇</button>
+</div>
 
 <!-- ==========================================
      FIRECRACKER CANVAS
@@ -409,9 +481,18 @@
 <canvas id="fx"></canvas>
 
 <!-- ==========================================
-     INTRO OVERLAY (7 STARS -> ZOOM)
+     START SCREEN (Fixes Audio Autoplay)
+     ========================================== -->
+<div id="startScreen">
+  <button class="start-btn" id="startBtn">Tap to Start Journey ✨</button>
+</div>
+
+<!-- ==========================================
+     PUNCHY INTRO OVERLAY
      ========================================== -->
 <div id="intro">
+  <div class="milky-way" id="milkyWay"></div>
+  <div class="solar-system" id="solarSystem"></div>
   <div class="constellation" id="constellation">
     <div class="star"></div><div class="star"></div><div class="star"></div>
     <div class="star"></div><div class="star"></div><div class="star"></div>
@@ -430,89 +511,92 @@
 <div id="main">
   
   <!-- HERO SECTION -->
-  <div class="hero">
-    <!-- HAPPY -->
-    <div class="bunting-row">
-      <div class="bunting-card">H</div>
-      <div class="bunting-card">A</div>
-      <div class="bunting-card">P</div>
-      <div class="bunting-card">P</div>
-      <div class="bunting-card">Y</div>
-    </div>
-    <!-- BIRTHDAY -->
-    <div class="bunting-row bottom">
-      <div class="bunting-card jewel">B</div>
-      <div class="bunting-card jewel">I</div>
-      <div class="bunting-card jewel">R</div>
-      <div class="bunting-card jewel">T</div>
-      <div class="bunting-card jewel">H</div>
-      <div class="bunting-card jewel">D</div>
-      <div class="bunting-card jewel">A</div>
-      <div class="bunting-card jewel">Y</div>
+  <section class="hero" id="hero-section">
+    <div class="hero-ornament-top">✦ ✧ ✦</div>
+    
+    <div class="happy-text">✦ H A P P Y ✦</div>
+    <div class="birthday-ribbon">BIRTHDAY</div>
+    
+    <div class="hero-photo-wrapper">
+      <img src="https://i.postimg.cc/wTjCcmMx/IMG-20260920-123257-601.jpg" alt="Syed Hadeeqa Andrabi" />
     </div>
     
-    <img class="hero-img" src="https://i.postimg.cc/wTjCcmMx/IMG-20260920-123257-601.jpg" alt="Syed Hadeeqa Andrabi" />
-    
-    <h1 class="hero-name">SYED HADEEQA ANDRABI</h1>
-  </div>
+    <div class="name-wrapper">
+      <div class="name-small">SYED</div>
+      <div class="name-main">
+        <!-- SVG Crown -->
+        <svg class="crown-svg" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="goldGrad" x1="0" y1="0" x2="100" y2="60" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#F6DFA0"/>
+              <stop offset="50%" stop-color="#C9932E"/>
+              <stop offset="100%" stop-color="#F6DFA0"/>
+            </linearGradient>
+          </defs>
+          <path d="M10 50 L20 10 L40 30 L50 0 L60 30 L80 10 L90 50 Z" fill="url(#goldGrad)" />
+          <rect x="10" y="55" width="80" height="5" fill="url(#goldGrad)" />
+          <circle cx="20" cy="10" r="4" fill="#FFF" />
+          <circle cx="50" cy="0" r="5" fill="#FFF" />
+          <circle cx="80" cy="10" r="4" fill="#FFF" />
+        </svg>
+        HADEEQA
+      </div>
+      <div class="name-small">ANDRABI</div>
+    </div>
+
+    <div class="badge-7">
+      <span class="badge-number">7</span>
+      <span class="badge-text">MAGICAL<br>YEARS</span>
+    </div>
+  </section>
 
   <!-- 5 IMAGE CARDS SECTION (Scrapbook Polaroids) -->
-  <section class="container">
+  <section class="container" id="photos-section">
     <div class="cards-grid">
-      
       <div class="polaroid fade-el">
         <img src="https://i.postimg.cc/fTRGj9yR/IMG-20260920-123253-992.jpg" alt="Hadeeqa Memory" loading="lazy" />
         <div class="polaroid-cap">Reaching for the stars ✨</div>
       </div>
-      
       <div class="polaroid fade-el">
         <img src="https://i.postimg.cc/VLkxBCvN/IMG-20260920-123250-177.jpg" alt="Hadeeqa Memory" loading="lazy" />
         <div class="polaroid-cap">A queen in her meadow 👑</div>
       </div>
-      
       <div class="polaroid fade-el">
         <img src="https://i.postimg.cc/FsHMgLzR/IMG-20260920-123248-081.jpg" alt="Hadeeqa Memory" loading="lazy" />
         <div class="polaroid-cap">Precious smiles 🦄</div>
       </div>
-      
       <div class="polaroid fade-el">
         <img src="https://i.postimg.cc/gk2CqZjn/IMG-20260920-123242-620.jpg" alt="Hadeeqa Memory" loading="lazy" />
         <div class="polaroid-cap">Best sister, best friend 💖</div>
       </div>
-      
       <div class="polaroid fade-el">
         <img src="https://i.postimg.cc/Hskq4ynn/IMG-20260920-123245-585.jpg" alt="Hadeeqa Memory" loading="lazy" />
         <div class="polaroid-cap">Pure golden magic 🌟</div>
       </div>
-
     </div>
   </section>
 
   <!-- 3 VIDEOS SECTION WITH CAPTIONS -->
-  <section class="container">
+  <section class="container" id="videos-section">
     <h2 class="section-title fade-el">Magical Moments</h2>
     <div class="video-grid">
-      
       <div class="video-wrapper fade-el">
         <video src="5_6161055535853478648.mp4" controls preload="metadata"></video>
         <p class="video-cap">A little clip of pure joy</p>
       </div>
-      
       <div class="video-wrapper fade-el">
         <video src="5_6161055535853478650.mp4" controls preload="metadata"></video>
         <p class="video-cap">Laughter, captured forever</p>
       </div>
-      
       <div class="video-wrapper fade-el">
         <video src="VID_20260920_123056_1.mp4" controls preload="metadata"></video>
         <p class="video-cap">Making beautiful memories</p>
       </div>
-
     </div>
   </section>
 
-  <!-- CAKE SECTION (No Candles, Text on Tiers) -->
-  <section class="container">
+  <!-- CAKE SECTION -->
+  <section class="container" id="cake-section">
     <div class="cake-wrapper fade-el">
       <svg class="cake-svg" viewBox="0 0 300 320" xmlns="http://www.w3.org/2000/svg">
         <!-- Plate -->
@@ -532,15 +616,15 @@
         <rect x="95" y="110" width="110" height="10" rx="5" fill="#B4E5D2"/>
         
         <!-- Text on Cake Tiers -->
-        <text x="150" y="145" text-anchor="middle" font-family="'Fraunces', serif" font-weight="900" font-size="20" fill="#1F1533">HAPPY</text>
-        <text x="150" y="198" text-anchor="middle" font-family="'Fraunces', serif" font-weight="900" font-size="20" fill="#1F1533">BIRTHDAY</text>
-        <text x="150" y="265" text-anchor="middle" font-family="'Fraunces', serif" font-weight="900" font-size="26" fill="#1F1533">HADEEQA</text>
+        <text x="150" y="145" text-anchor="middle" font-family="'Berkshire Swash', cursive" font-size="24" fill="#1F1533">HAPPY</text>
+        <text x="150" y="200" text-anchor="middle" font-family="'Berkshire Swash', cursive" font-size="24" fill="#1F1533">BIRTHDAY</text>
+        <text x="150" y="268" text-anchor="middle" font-family="'Berkshire Swash', cursive" font-size="32" fill="#1F1533">HADEEQA</text>
       </svg>
     </div>
   </section>
 
   <!-- SHORT WISHING MESSAGE -->
-  <section class="container">
+  <section class="container" id="message-section">
     <div class="message-box fade-el">
       <h3>Happy 7th Birthday! 🦄✨</h3>
       <p>Keep shining, keep smiling, and never lose your magical spark. You are the brightest star in our galaxy!</p>
@@ -555,10 +639,25 @@
 
 <script>
   /* ============================================================
-     AUDIO TOGGLE LOGIC
+     GENERATE FIREFLIES
+     ============================================================ */
+  const firefliesContainer = document.getElementById('fireflies');
+  for(let i=0; i<30; i++) {
+    const fly = document.createElement('div');
+    fly.className = 'firefly';
+    fly.style.left = Math.random() * 100 + 'vw';
+    fly.style.top = Math.random() * 100 + 'vh';
+    fly.style.animationDelay = Math.random() * 5 + 's';
+    fly.style.animationDuration = 5 + Math.random() * 5 + 's';
+    firefliesContainer.appendChild(fly);
+  }
+
+  /* ============================================================
+     SHARE & AUDIO LOGIC
      ============================================================ */
   const bgMusic = document.getElementById('bgMusic');
   const musicBtn = document.getElementById('musicBtn');
+  const shareBtn = document.getElementById('shareBtn');
   
   musicBtn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -572,29 +671,57 @@
     }
   });
 
+  shareBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    const shareData = {
+      title: 'Hadeeqa Turns 7 ✨',
+      text: '🎂✨ Hadeeqa is turning 7!\nCome celebrate her magical birthday with us 💜',
+      url: window.location.href
+    };
+    if (navigator.share) {
+      try { await navigator.share(shareData); } catch (err) { console.log('Share dismissed'); }
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Link copied to clipboard! Share it with friends.');
+    }
+  });
+
   /* ============================================================
-     DIRECT INTRO TIMING & BALLOON CURTAIN
+     FAST INTRO & BALLOONS
      ============================================================ */
+  const startScreen = document.getElementById('startScreen');
+  const startBtn = document.getElementById('startBtn');
   const intro = document.getElementById('intro');
   const main = document.getElementById('main');
   const balloonCurtain = document.getElementById('balloon-curtain');
   const tapHint = document.getElementById('tapHint');
+  const floatingControls = document.getElementById('floatingControls');
 
-  window.addEventListener('load', () => {
-    document.getElementById('constellation').classList.add('animate');
+  startBtn.addEventListener('click', () => {
+    // 1. Hide start screen & Play music
+    startScreen.style.opacity = '0';
+    setTimeout(() => { startScreen.style.display = 'none'; }, 500);
     
-    // Launch balloons as constellation finishes
-    setTimeout(() => {
-      launchBalloons();
-    }, 2800); 
+    bgMusic.muted = false;
+    bgMusic.play().then(() => { musicBtn.innerHTML = '🎵'; }).catch(e => console.log(e));
 
-    // Reveal main page under the rising balloon curtain
+    // 2. Fast Intro Sequence
+    intro.style.display = 'flex';
+    document.getElementById('milkyWay').classList.add('animate');
+    document.getElementById('solarSystem').classList.add('animate');
+    document.getElementById('constellation').classList.add('animate');
+
+    // 3. Launch balloons as stars zoom past (at 3.5s)
+    setTimeout(() => { launchBalloons(); }, 3500); 
+
+    // 4. Reveal main page under the balloons (at 4s)
     setTimeout(() => {
       intro.style.opacity = '0';
       main.classList.add('show');
+      floatingControls.classList.add('show');
       document.body.classList.remove('locked');
       
-      // Auto-trigger firecrackers
+      // Auto firecrackers
       setTimeout(() => {
         firecracker(window.innerWidth/2, window.innerHeight*0.3);
         firecracker(window.innerWidth*0.3, window.innerHeight*0.6);
@@ -605,23 +732,21 @@
       setTimeout(() => { intro.style.display = 'none'; }, 1000);
       setTimeout(() => { balloonCurtain.style.display = 'none'; }, 3000);
       setTimeout(() => { tapHint.classList.remove('show'); }, 6000);
-
-    }, 3400);
+    }, 4000);
   });
 
   function launchBalloons() {
     const colors = ['#F3A79C', '#E9DBFB', '#7FCBAE', '#F6DFA0', '#E4B34A', '#8B5FBF'];
     const w = window.innerWidth;
-    const balloonCount = 60;
+    const balloonCount = 50;
     
     for (let i = 0; i < balloonCount; i++) {
       const b = document.createElement('div');
       b.className = 'fly-balloon';
-      
       const left = -10 + Math.random() * 120;
       const color = colors[Math.floor(Math.random() * colors.length)];
-      const delay = Math.random() * 0.8;
-      const duration = 1.8 + Math.random() * 1.5;
+      const delay = Math.random() * 0.5;
+      const duration = 1.5 + Math.random() * 1;
       const r1 = (Math.random() - 0.5) * 30;
       const r2 = (Math.random() - 0.5) * 60;
       const scale = 0.8 + Math.random() * 0.8;
@@ -632,7 +757,6 @@
       b.style.setProperty('--r2', r2 + 'deg');
       b.style.setProperty('--s', scale);
       b.style.animation = `flyUp ${duration}s ${delay}s cubic-bezier(0.4, 0, 0.2, 1) forwards`;
-      
       balloonCurtain.appendChild(b);
     }
   }
@@ -667,8 +791,7 @@
         rot: Math.random() * Math.PI * 2,
         vr: (Math.random() - 0.5) * 0.4,
         color: palette[Math.floor(Math.random() * palette.length)],
-        life: 1,
-        shape: Math.random() > 0.5 ? 'circle' : 'rect'
+        life: 1, shape: Math.random() > 0.5 ? 'circle' : 'rect'
       });
     }
   }
@@ -677,28 +800,16 @@
     ctx.clearRect(0, 0, W, H);
     for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i];
-      p.vy += 0.3;
-      p.vx *= 0.95;
-      p.vy *= 0.95;
-      p.x += p.vx;
-      p.y += p.vy;
-      p.rot += p.vr;
-      p.life -= 0.015;
+      p.vy += 0.3; p.vx *= 0.95; p.vy *= 0.95;
+      p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life -= 0.015;
 
-      if (p.life <= 0 || p.y > H + 20) {
-        particles.splice(i, 1);
-        continue;
-      }
+      if (p.life <= 0 || p.y > H + 20) { particles.splice(i, 1); continue; }
 
       ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rot);
-      ctx.globalAlpha = Math.max(0, p.life);
-      ctx.fillStyle = p.color;
+      ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.globalAlpha = Math.max(0, p.life); ctx.fillStyle = p.color;
       if (p.shape === 'circle') {
-        ctx.beginPath();
-        ctx.arc(0, 0, p.w/2, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(0, 0, p.w/2, 0, Math.PI * 2); ctx.fill();
       } else {
         ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
       }
@@ -709,28 +820,38 @@
   renderFX();
 
   document.addEventListener('click', (e) => {
-    if (e.target.closest('#musicBtn') || e.target.tagName === 'VIDEO') return;
+    if (e.target.closest('.control-btn') || e.target.tagName === 'VIDEO' || e.target.id === 'startBtn') return;
     tapHint.classList.remove('show');
     firecracker(e.clientX, e.clientY);
   });
 
   /* ============================================================
-     SMOOTH SCROLL REVEALS
+     DYNAMIC BACKGROUND & SCROLL REVEALS
      ============================================================ */
-  const observer = new IntersectionObserver((entries) => {
+  const bgLayers = document.querySelectorAll('.bg-layer');
+  const sections = document.querySelectorAll('section');
+
+  const scrollObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
+      // Handle Scroll Reveal
+      if (entry.isIntersecting && entry.target.classList.contains('fade-el')) {
         entry.target.classList.add('in-view');
-        observer.unobserve(entry.target); 
+        scrollObserver.unobserve(entry.target); 
+      }
+      
+      // Handle Dynamic Background
+      if (entry.isIntersecting && entry.target.tagName === 'SECTION') {
+        const targetBgId = 'bg-' + entry.target.id.split('-')[0];
+        bgLayers.forEach(layer => {
+          if (layer.id === targetBgId) layer.classList.add('active');
+          else layer.classList.remove('active');
+        });
       }
     });
-  }, { 
-    threshold: 0.1,
-    rootMargin: "0px 0px -50px 0px"
-  });
+  }, { threshold: 0.2, rootMargin: "0px 0px -50px 0px" });
 
-  document.querySelectorAll('.fade-el').forEach(el => {
-    observer.observe(el);
+  document.querySelectorAll('.fade-el, section').forEach(el => {
+    scrollObserver.observe(el);
   });
 </script>
 
