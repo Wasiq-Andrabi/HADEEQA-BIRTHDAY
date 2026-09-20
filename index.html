@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Caveat:wght@600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet" />
 <style>
   /* ============================================================
-     DESIGN TOKENS & BASE STYLES
+     DESIGN TOKENS & PERFORMANCE OPTIMIZATIONS
      ============================================================ */
   :root {
     --ink: #1F1533;
@@ -29,17 +29,25 @@
   }
 
   html { scroll-behavior: smooth; }
+  
   body {
     margin: 0; padding: 0; min-height: 100vh;
     font-family: 'Quicksand', system-ui, sans-serif;
     color: var(--ink);
     background-color: #0B0616;
+    overflow-x: hidden;
+  }
+  
+  /* Fixed background pseudo-element for buttery smooth scrolling */
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: -1;
     background-image: 
       radial-gradient(circle at 10% 20%, rgba(139, 95, 191, 0.15), transparent 40%),
       radial-gradient(circle at 90% 80%, rgba(246, 223, 160, 0.1), transparent 40%);
-    background-attachment: fixed; 
-    overflow-x: hidden;
+    pointer-events: none;
   }
+  
   body.locked { overflow: hidden; }
 
   h1, h2, h3 { font-family: 'Fraunces', serif; margin: 0; }
@@ -47,120 +55,11 @@
   img, video { max-width: 100%; display: block; }
 
   /* ============================================================
-     INTERACTION OVERLAY (Browser Audio Fix)
+     FX CANVAS (Firecrackers & Confetti)
      ============================================================ */
-  #startScreen {
-    position: fixed; inset: 0; z-index: 10000;
-    background: #030108;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    color: var(--gold-light);
-    transition: opacity 0.5s ease;
-  }
-  .start-btn {
-    padding: 16px 36px;
-    font-family: 'Fraunces', serif;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #030108;
-    background: linear-gradient(135deg, var(--gold-light), var(--gold));
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 0 30px rgba(228,179,74,0.4);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(228,179,74,0.4); }
-    50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(228,179,74,0.7); }
-  }
-
-  /* ============================================================
-     INTRO ANIMATION (GALAXY -> SOLAR SYSTEM -> 7 STARS)
-     ============================================================ */
-  #intro {
-    position: fixed; inset: 0; z-index: 9999;
-    background: #030108;
-    display: none; /* Shown via JS after interaction */
-    align-items: center; justify-content: center;
-    overflow: hidden;
-  }
-
-  /* 1. Milky Way */
-  .milky-way {
-    position: absolute;
-    width: 60vw; height: 60vw;
-    border-radius: 50%;
-    background: conic-gradient(from 0deg, transparent, rgba(139,95,191,0.6), transparent 40%, rgba(246,223,160,0.6), transparent 80%);
-    filter: blur(25px);
-    opacity: 0;
-  }
-  .milky-way.animate { animation: seqGalaxy 3s ease-in-out forwards; }
-
-  /* 2. Solar System */
-  .solar-system {
-    position: absolute;
-    width: 40vw; height: 40vw;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: inset 0 0 40px rgba(246,223,160,0.05);
-    opacity: 0;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .solar-system::before {
-    content: ""; position: absolute;
-    width: 10vw; height: 10vw; border-radius: 50%;
-    background: radial-gradient(circle, #FFF8DC, #E4B34A);
-    box-shadow: 0 0 40px #E4B34A;
-  }
-  .solar-system::after {
-    content: ""; position: absolute; top: 0; left: 50%;
-    width: 8px; height: 8px; border-radius: 50%;
-    background: #7FCBAE;
-    box-shadow: 0 0 10px #7FCBAE;
-    transform: translate(-50%, -50%);
-  }
-  .solar-system.animate { animation: seqSolar 3s 2.8s ease-in-out forwards; }
-
-  /* 3. Constellation 7 */
-  .constellation {
-    position: relative;
-    width: 180px; height: 260px;
-    z-index: 2;
-    opacity: 0;
-  }
-  .constellation.animate { animation: seqStars 4.5s 5.5s ease-in-out forwards; }
-
-  .star {
-    position: absolute;
-    width: 8px; height: 8px;
-    background: #FFF;
-    border-radius: 50%;
-    box-shadow: 0 0 15px 4px rgba(246,223,160,0.9);
-  }
-  .star:nth-child(1) { top: 0%; left: 0%; }
-  .star:nth-child(2) { top: 0%; left: 33%; }
-  .star:nth-child(3) { top: 0%; left: 66%; }
-  .star:nth-child(4) { top: 0%; left: 100%; }
-  .star:nth-child(5) { top: 33%; left: 75%; }
-  .star:nth-child(6) { top: 66%; left: 50%; }
-  .star:nth-child(7) { top: 100%; left: 25%; }
-
-  /* Sequences */
-  @keyframes seqGalaxy {
-    0% { opacity: 0; transform: scale(0.2) rotate(0deg); }
-    40% { opacity: 1; transform: scale(1.2) rotate(90deg); }
-    100% { opacity: 0; transform: scale(3) rotate(180deg); }
-  }
-  @keyframes seqSolar {
-    0% { opacity: 0; transform: scale(0.2) rotate(0deg); }
-    40% { opacity: 1; transform: scale(1) rotate(45deg); }
-    100% { opacity: 0; transform: scale(4) rotate(90deg); }
-  }
-  @keyframes seqStars {
-    0%, 10% { opacity: 0; transform: scale(0.5); }
-    30%, 70% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(12); } /* Massive zoom past stars */
+  #fx {
+    position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+    width: 100vw; height: 100vh;
   }
 
   /* ============================================================
@@ -179,11 +78,128 @@
     font-size: 1.5rem;
     box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     cursor: pointer;
-    display: none; /* Shown after start */
-    align-items: center; justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     transition: transform 0.2s ease;
   }
   .music-btn:active { transform: scale(0.9); }
+
+  /* ============================================================
+     INTRO ANIMATION (GALAXY -> SOLAR SYSTEM -> 7 STARS)
+     ============================================================ */
+  #intro {
+    position: fixed; inset: 0; z-index: 8000;
+    background: #030108;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    transition: opacity 0.8s ease-in-out;
+  }
+
+  /* 1. Milky Way */
+  .milky-way {
+    position: absolute;
+    width: 70vw; height: 70vw;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent, rgba(139,95,191,0.6), transparent 40%, rgba(246,223,160,0.6), transparent 80%);
+    filter: blur(30px);
+    opacity: 0;
+    animation: seqGalaxy 3.5s ease-in-out forwards;
+  }
+
+  /* 2. Solar System */
+  .solar-system {
+    position: absolute;
+    width: 50vw; height: 50vw;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: inset 0 0 40px rgba(246,223,160,0.05);
+    opacity: 0;
+    display: flex; align-items: center; justify-content: center;
+    animation: seqSolar 3.5s 3.2s ease-in-out forwards;
+  }
+  .solar-system::before {
+    content: ""; position: absolute;
+    width: 12vw; height: 12vw; border-radius: 50%;
+    background: radial-gradient(circle, #FFF8DC, #E4B34A);
+    box-shadow: 0 0 50px #E4B34A;
+  }
+  .solar-system::after {
+    content: ""; position: absolute; top: 0; left: 50%;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #7FCBAE;
+    box-shadow: 0 0 15px #7FCBAE;
+    transform: translate(-50%, -50%);
+  }
+
+  /* 3. Constellation 7 */
+  .constellation {
+    position: relative;
+    width: 180px; height: 260px;
+    z-index: 2;
+    opacity: 0;
+    animation: seqStars 4.5s 6.5s ease-in-out forwards;
+  }
+  .star {
+    position: absolute;
+    width: 8px; height: 8px;
+    background: #FFF;
+    border-radius: 50%;
+    box-shadow: 0 0 15px 4px rgba(246,223,160,0.9);
+  }
+  .star:nth-child(1) { top: 0%; left: 0%; }
+  .star:nth-child(2) { top: 0%; left: 33%; }
+  .star:nth-child(3) { top: 0%; left: 66%; }
+  .star:nth-child(4) { top: 0%; left: 100%; }
+  .star:nth-child(5) { top: 33%; left: 75%; }
+  .star:nth-child(6) { top: 66%; left: 50%; }
+  .star:nth-child(7) { top: 100%; left: 25%; }
+
+  @keyframes seqGalaxy {
+    0% { opacity: 0; transform: scale(0.2) rotate(0deg); }
+    30% { opacity: 1; transform: scale(1) rotate(60deg); }
+    80% { opacity: 1; transform: scale(1.5) rotate(120deg); }
+    100% { opacity: 0; transform: scale(3) rotate(180deg); }
+  }
+  @keyframes seqSolar {
+    0% { opacity: 0; transform: scale(0.2) rotate(0deg); }
+    30% { opacity: 1; transform: scale(1) rotate(45deg); }
+    80% { opacity: 1; transform: scale(1.5) rotate(90deg); }
+    100% { opacity: 0; transform: scale(4) rotate(135deg); }
+  }
+  @keyframes seqStars {
+    0% { opacity: 0; transform: scale(0.5); }
+    20%, 70% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(15); } 
+  }
+
+  /* ============================================================
+     BALLOON CURTAIN (Transition to Main Page)
+     ============================================================ */
+  #balloon-curtain {
+    position: fixed; inset: 0; z-index: 7000;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .fly-balloon {
+    position: absolute;
+    bottom: -200px;
+    width: 60px; height: 80px;
+    background: radial-gradient(circle at 30% 30%, #fff, var(--c) 60%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow: inset -5px -5px 15px rgba(0,0,0,0.1);
+    opacity: 0.9;
+    will-change: transform;
+  }
+  .fly-balloon::after {
+    content: ""; position: absolute; bottom: -8px; left: 50%;
+    transform: translateX(-50%);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 8px solid var(--c);
+  }
+  @keyframes flyUp {
+    0% { transform: translateY(0) rotate(var(--r1)); }
+    100% { transform: translateY(-120vh) rotate(var(--r2)); }
+  }
 
   /* ============================================================
      MAIN PAGE LAYOUT
@@ -191,7 +207,7 @@
   #main {
     opacity: 0;
     visibility: hidden;
-    transition: opacity 1.5s ease-in-out;
+    transition: opacity 1s ease-in-out;
   }
   #main.show {
     opacity: 1;
@@ -207,7 +223,7 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 60px 20px 40px;
+    padding: 80px 20px 40px;
   }
 
   .bunting-row {
@@ -216,7 +232,7 @@
     gap: 6px;
     margin-bottom: 8px;
   }
-  .bunting-row.bottom { margin-bottom: 30px; }
+  .bunting-row.bottom { margin-bottom: 35px; }
 
   .bunting-card {
     background: linear-gradient(135deg, var(--accent-pink), #E8877A);
@@ -224,21 +240,21 @@
     font-family: 'Fraunces', serif;
     font-weight: 900;
     font-size: 1.2rem;
-    width: 34px; height: 44px;
+    width: 36px; height: 46px;
     display: flex; align-items: center; justify-content: center;
     border-radius: 4px 4px 12px 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     border-bottom: 2px solid rgba(255,255,255,0.3);
   }
   .bunting-card.jewel { background: linear-gradient(135deg, var(--jewel), var(--jewel-deep)); }
 
   .hero-img {
     width: 100%;
-    max-width: 320px;
+    max-width: 340px;
     aspect-ratio: 3/4;
     object-fit: cover;
     border-radius: 12px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
     border: 4px solid var(--gold-light);
     margin-bottom: 25px;
   }
@@ -246,28 +262,21 @@
   .hero-name {
     font-family: 'Fraunces', serif;
     font-weight: 900;
-    font-size: clamp(1.8rem, 7vw, 3rem);
+    font-size: clamp(2rem, 8vw, 3rem);
     letter-spacing: 1px;
     background: linear-gradient(100deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-light) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     text-shadow: 0 4px 20px rgba(228,179,74,0.2);
-    margin-bottom: 10px;
-  }
-  .hero-sub {
-    color: var(--accent-lilac);
-    font-family: 'Quicksand', sans-serif;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-size: 0.85rem;
+    margin: 0;
   }
 
   /* --- SCRAPBOOK PHOTO CARDS (Polaroids) --- */
   .cards-grid {
     display: flex;
     flex-direction: column;
-    gap: 50px;
+    gap: 55px;
     padding: 20px 0;
   }
   
@@ -279,8 +288,9 @@
     position: relative;
     /* Scroll reveal defaults */
     opacity: 0;
-    transform: translateY(40px) rotate(0deg);
+    transform: translateY(30px) rotate(0deg);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    will-change: transform, opacity;
   }
   
   /* Alternating tilts when in view */
@@ -312,7 +322,7 @@
     bottom: 12px; left: 0; right: 0;
     text-align: center;
     font-family: 'Caveat', cursive;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     color: var(--ink);
     font-weight: 700;
   }
@@ -322,12 +332,13 @@
     color: var(--gold-light);
     text-align: center;
     font-size: 2.2rem;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
   }
   .video-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 45px;
   }
   .video-wrapper {
     background: #1A1230;
@@ -335,7 +346,6 @@
     padding: 12px;
     border: 1px solid rgba(246,223,160,0.15);
     box-shadow: var(--shadow-soft);
-    /* Scroll reveal */
     opacity: 0; transform: translateY(30px);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
   }
@@ -351,7 +361,7 @@
     margin-top: 15px;
     text-align: center;
     font-family: 'Caveat', cursive;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     color: var(--accent-lilac);
   }
 
@@ -373,7 +383,7 @@
     margin: 0 auto;
   }
 
-  /* --- SHORT MESSAGE SECTION --- */
+  /* --- MESSAGE SECTION --- */
   .message-box {
     background: var(--accent-lilac);
     color: var(--ink);
@@ -402,22 +412,49 @@
     color: rgba(255,255,255,0.4);
     font-size: 0.9rem;
   }
+  
+  /* Tap hint */
+  .tap-hint {
+    position: fixed;
+    bottom: 30px; left: 50%;
+    transform: translateX(-50%);
+    color: var(--gold-light);
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    pointer-events: none;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.5s;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+  }
+  .tap-hint.show {
+    opacity: 0.8;
+    animation: pulseHint 2s infinite;
+  }
+  @keyframes pulseHint {
+    0%, 100% { opacity: 0.4; transform: translateX(-50%) scale(0.95); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+  }
 </style>
 </head>
 <body class="locked">
 
-<!-- Audio Element -->
-<audio id="bgMusic" src="your-music-file.mp3" loop preload="auto"></audio>
+<!-- Audio Element (Autoplay but muted by default) -->
+<audio id="bgMusic" src="your-music-file.mp3" loop autoplay muted playsinline></audio>
 
 <!-- Pinned Music Button -->
-<button id="musicBtn" class="music-btn" aria-label="Toggle Music">🎵</button>
+<button id="musicBtn" class="music-btn" aria-label="Toggle Music">🔇</button>
+
+<!-- Tap Hint -->
+<div id="tapHint" class="tap-hint">Tap anywhere to burst!</div>
 
 <!-- ==========================================
-     START SCREEN (Fixes Audio Autoplay)
+     FIRECRACKER CANVAS
      ========================================== -->
-<div id="startScreen">
-  <button class="start-btn" id="startBtn">Tap to Start Journey ✨</button>
-</div>
+<canvas id="fx"></canvas>
 
 <!-- ==========================================
      INTRO OVERLAY (ASTRONOMY THEME)
@@ -426,15 +463,17 @@
   <div class="milky-way" id="milkyWay"></div>
   <div class="solar-system" id="solarSystem"></div>
   <div class="constellation" id="constellation">
-    <div class="star"></div>
-    <div class="star"></div>
-    <div class="star"></div>
-    <div class="star"></div>
-    <div class="star"></div>
-    <div class="star"></div>
+    <!-- 7 Stars -->
+    <div class="star"></div><div class="star"></div><div class="star"></div>
+    <div class="star"></div><div class="star"></div><div class="star"></div>
     <div class="star"></div>
   </div>
 </div>
+
+<!-- ==========================================
+     BALLOON CURTAIN
+     ========================================== -->
+<div id="balloon-curtain"></div>
 
 <!-- ==========================================
      MAIN CONTENT
@@ -466,7 +505,6 @@
     <img class="hero-img" src="https://i.postimg.cc/wTjCcmMx/IMG-20260920-123257-601.jpg" alt="Syed Hadeeqa Andrabi" />
     
     <h1 class="hero-name">SYED HADEEQA ANDRABI</h1>
-    <p class="hero-sub">Turning Seven ✦ 24th September</p>
   </div>
 
   <!-- 5 IMAGE CARDS SECTION (Scrapbook Polaroids) -->
@@ -474,57 +512,53 @@
     <div class="cards-grid">
       
       <div class="polaroid fade-el">
-        <img src="https://i.postimg.cc/fTRGj9yR/IMG-20260920-123253-992.jpg" alt="Hadeeqa" loading="lazy" />
+        <img src="https://i.postimg.cc/fTRGj9yR/IMG-20260920-123253-992.jpg" alt="Hadeeqa Memory" loading="lazy" />
         <div class="polaroid-cap">Reaching for the stars ✨</div>
       </div>
       
       <div class="polaroid fade-el">
-        <img src="https://i.postimg.cc/VLkxBCvN/IMG-20260920-123250-177.jpg" alt="Hadeeqa" loading="lazy" />
+        <img src="https://i.postimg.cc/VLkxBCvN/IMG-20260920-123250-177.jpg" alt="Hadeeqa Memory" loading="lazy" />
         <div class="polaroid-cap">A queen in her meadow 👑</div>
       </div>
       
       <div class="polaroid fade-el">
-        <img src="https://i.postimg.cc/FsHMgLzR/IMG-20260920-123248-081.jpg" alt="Hadeeqa" loading="lazy" />
+        <img src="https://i.postimg.cc/FsHMgLzR/IMG-20260920-123248-081.jpg" alt="Hadeeqa Memory" loading="lazy" />
         <div class="polaroid-cap">Precious smiles 🦄</div>
       </div>
       
       <div class="polaroid fade-el">
-        <img src="https://i.postimg.cc/gk2CqZjn/IMG-20260920-123242-620.jpg" alt="Hadeeqa" loading="lazy" />
+        <img src="https://i.postimg.cc/gk2CqZjn/IMG-20260920-123242-620.jpg" alt="Hadeeqa Memory" loading="lazy" />
         <div class="polaroid-cap">Best sister, best friend 💖</div>
       </div>
       
       <div class="polaroid fade-el">
-        <img src="https://i.postimg.cc/Hskq4ynn/IMG-20260920-123245-585.jpg" alt="Hadeeqa" loading="lazy" />
+        <img src="https://i.postimg.cc/Hskq4ynn/IMG-20260920-123245-585.jpg" alt="Hadeeqa Memory" loading="lazy" />
         <div class="polaroid-cap">Pure golden magic 🌟</div>
       </div>
 
     </div>
   </section>
 
-  <!-- 3 VIDEOS SECTION WITH CAPTIONS -->
+  <!-- 3 VIDEOS SECTION -->
   <section class="container">
     <h2 class="section-title fade-el">Magical Moments</h2>
     <div class="video-grid">
-      
       <div class="video-wrapper fade-el">
         <video src="video1.mp4" controls preload="metadata"></video>
         <p class="video-cap">A little clip of pure joy</p>
       </div>
-      
       <div class="video-wrapper fade-el">
         <video src="video2.mp4" controls preload="metadata"></video>
         <p class="video-cap">Laughter, captured forever</p>
       </div>
-      
       <div class="video-wrapper fade-el">
         <video src="video3.mp4" controls preload="metadata"></video>
-        <p class="video-cap">Making memories</p>
+        <p class="video-cap">Making beautiful memories</p>
       </div>
-
     </div>
   </section>
 
-  <!-- CAKE SECTION -->
+  <!-- CAKE SECTION (No Candles, Text on Tiers) -->
   <section class="container">
     <div class="cake-wrapper fade-el">
       <svg class="cake-svg" viewBox="0 0 300 320" xmlns="http://www.w3.org/2000/svg">
@@ -544,7 +578,7 @@
         <rect x="95" y="110" width="110" height="55" rx="10" fill="#7FCBAE"/>
         <rect x="95" y="110" width="110" height="10" rx="5" fill="#B4E5D2"/>
         
-        <!-- Text on Cake -->
+        <!-- Text on Cake Tiers -->
         <text x="150" y="145" text-anchor="middle" font-family="'Fraunces', serif" font-weight="900" font-size="20" fill="#1F1533">HAPPY</text>
         <text x="150" y="198" text-anchor="middle" font-family="'Fraunces', serif" font-weight="900" font-size="20" fill="#1F1533">BIRTHDAY</text>
         <text x="150" y="265" text-anchor="middle" font-family="'Fraunces', serif" font-weight="900" font-size="26" fill="#1F1533">HADEEQA</text>
@@ -556,7 +590,7 @@
   <section class="container">
     <div class="message-box fade-el">
       <h3>Happy 7th Birthday! 🦄✨</h3>
-      <p>You are the brightest star in our galaxy. Keep shining, keep smiling, and never lose your magical spark. We love you to the moon and back!</p>
+      <p>Keep shining, keep smiling, and never lose your magical spark. You are the brightest star in our galaxy!</p>
     </div>
   </section>
 
@@ -568,60 +602,24 @@
 
 <script>
   /* ============================================================
-     AUDIO & INTRO ORCHESTRATION
+     AUDIO TOGGLE LOGIC
      ============================================================ */
-  const startScreen = document.getElementById('startScreen');
-  const startBtn = document.getElementById('startBtn');
-  const intro = document.getElementById('intro');
-  const main = document.getElementById('main');
   const bgMusic = document.getElementById('bgMusic');
   const musicBtn = document.getElementById('musicBtn');
   
-  let isPlaying = false;
-
-  startBtn.addEventListener('click', () => {
-    // 1. Fade out the start screen
-    startScreen.style.opacity = '0';
-    setTimeout(() => { startScreen.style.display = 'none'; }, 500);
-
-    // 2. Play Audio
-    bgMusic.play().then(() => {
-      isPlaying = true;
+  // Starts muted due to browser policies. Clicking the button unmutes/plays.
+  musicBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); // Prevent firecracker trigger
+    if (bgMusic.muted || bgMusic.paused) {
+      bgMusic.muted = false;
+      bgMusic.play().catch(err => console.log(err));
       musicBtn.innerHTML = '🎵';
-      musicBtn.style.display = 'flex';
-    }).catch(e => console.log("Audio play failed:", e));
-
-    // 3. Start Intro Sequence
-    intro.style.display = 'flex';
-    document.getElementById('milkyWay').classList.add('animate');
-    document.getElementById('solarSystem').classList.add('animate');
-    document.getElementById('constellation').classList.add('animate');
-
-    // 4. Sequence Timing -> Reveal Main Page
-    // Intro animations finish completely around 9.5s
-    setTimeout(() => {
-      intro.style.opacity = '0';
-      main.classList.add('show');
-      document.body.classList.remove('locked'); // unlock scroll
-      
-      setTimeout(() => {
-        intro.style.display = 'none';
-      }, 1000);
-    }, 9500); // Wait for the 7 stars to zoom past
-  });
-
-  // Pinned button toggle logic
-  musicBtn.addEventListener('click', () => {
-    if (isPlaying) {
-      bgMusic.pause();
-      musicBtn.innerHTML = '🔇';
-      isPlaying = false;
     } else {
-      bgMusic.play();
-      musicBtn.innerHTML = '🎵';
-      isPlaying = true;
+      bgMusic.muted = true;
+      musicBtn.innerHTML = '🔇';
     }
   });
 
   /* ============================================================
-     SMOOTH SCROLL REVEALS (Lightweight Perfor
+     INTRO TIMING & BALLOON CURTAIN
+     ======================================
