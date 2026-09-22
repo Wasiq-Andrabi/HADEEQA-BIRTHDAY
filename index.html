@@ -43,7 +43,7 @@
     font-family: 'Quicksand', system-ui, sans-serif;
     color: var(--ink);
     overflow-x: hidden;
-    background: #FFF1F5; 
+    background: #FFF1F5;
   }
   
   /* VIBRANT MAGICAL BACKGROUND */
@@ -73,19 +73,18 @@
   .butterflies {
     position: fixed; inset: 0; z-index: -2; pointer-events: none;
   }
-  .butterfly {
+  .bg-butterfly {
     position: absolute; bottom: -50px;
     font-size: 2rem;
     animation: flyButterfly linear infinite;
     will-change: transform;
     opacity: 0.8;
   }
-  /* Staggered Butterfly Animations */
-  .butterfly:nth-child(1) { left: 10%; animation-duration: 12s; animation-delay: 0s; font-size: 1.5rem; }
-  .butterfly:nth-child(2) { left: 30%; animation-duration: 15s; animation-delay: 2s; font-size: 2.2rem; }
-  .butterfly:nth-child(3) { left: 60%; animation-duration: 10s; animation-delay: 4s; font-size: 1.8rem; transform: scaleX(-1); }
-  .butterfly:nth-child(4) { left: 80%; animation-duration: 14s; animation-delay: 1s; font-size: 2.5rem; }
-  .butterfly:nth-child(5) { left: 50%; animation-duration: 18s; animation-delay: 6s; font-size: 1.6rem; transform: scaleX(-1); }
+  .bg-butterfly:nth-child(1) { left: 10%; animation-duration: 12s; animation-delay: 0s; font-size: 1.5rem; }
+  .bg-butterfly:nth-child(2) { left: 30%; animation-duration: 15s; animation-delay: 2s; font-size: 2.2rem; }
+  .bg-butterfly:nth-child(3) { left: 60%; animation-duration: 10s; animation-delay: 4s; font-size: 1.8rem; transform: scaleX(-1); }
+  .bg-butterfly:nth-child(4) { left: 80%; animation-duration: 14s; animation-delay: 1s; font-size: 2.5rem; }
+  .bg-butterfly:nth-child(5) { left: 50%; animation-duration: 18s; animation-delay: 6s; font-size: 1.6rem; transform: scaleX(-1); }
 
   @keyframes flyButterfly {
     0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
@@ -96,28 +95,54 @@
   }
 
   /* ============================================================
-     START SCREEN (No delays, instant action)
+     BUTTERFLY SWARM INTRO (The Magic "7")
      ============================================================ */
-  #startScreen {
+  #intro {
     position: fixed; inset: 0; z-index: 10000;
-    background: radial-gradient(circle at center, #FFF, #FCE1B6);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    transition: opacity 0.5s ease;
+    background: linear-gradient(135deg, #E1C1F6, #FFB3C6);
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 1s ease-in-out;
+    cursor: pointer;
+    overflow: hidden;
   }
-  .start-btn {
-    padding: 18px 40px;
+  
+  .intro-hint {
+    position: absolute; bottom: 15%;
     font-family: 'Fraunces', serif;
-    font-size: 1.4rem; font-weight: 700;
-    color: #fff;
-    background: linear-gradient(135deg, #FF85A2, #8B5FBF);
-    border: none; border-radius: 50px; cursor: pointer;
-    box-shadow: 0 10px 30px rgba(139, 95, 191, 0.4);
-    animation: pulseBtn 2s infinite;
+    font-size: 1.6rem; font-weight: 900;
+    color: #5B3B8C;
+    text-shadow: 0 2px 15px rgba(255,255,255,0.9);
+    animation: pulseHint 2s infinite;
+    transition: opacity 0.4s ease;
+    text-align: center;
   }
-  @keyframes pulseBtn {
-    0%, 100% { transform: scale(1); box-shadow: 0 10px 20px rgba(139, 95, 191, 0.4); }
-    50% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(139, 95, 191, 0.6); }
+  
+  #swarm-container {
+    position: absolute; inset: 0;
+    pointer-events: none;
+  }
+
+  .swarm-butterfly {
+    position: absolute;
+    left: var(--x); top: var(--y);
+    transform: translate(-50%, -50%);
+    will-change: transform, opacity;
+    animation: flutter 0.5s infinite alternate ease-in-out;
+    transition: transform 1.2s cubic-bezier(0.25, 1, 0.3, 1), opacity 1s ease-out;
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.9));
+  }
+  
+  /* Resting flutter */
+  @keyframes flutter {
+    0% { transform: translate(-50%, -50%) scale(1) rotate(-8deg); }
+    100% { transform: translate(-50%, -50%) scale(1.15) rotate(8deg); }
+  }
+
+  /* Scattered state */
+  .swarm-butterfly.scatter {
+    animation: none !important;
+    transform: translate(var(--tx), var(--ty)) scale(2.5) rotate(var(--trot));
+    opacity: 0;
   }
 
   /* ============================================================
@@ -173,7 +198,6 @@
     text-align: center; padding: 60px 20px 20px;
   }
 
-  /* Bunting style for HAPPY BIRTHDAY */
   .happy-bday-ribbon {
     font-family: 'Fraunces', serif;
     font-weight: 900;
@@ -193,14 +217,12 @@
     transform: rotate(-2deg);
   }
 
-  /* Typography for Name */
   .hero-names { margin-bottom: 20px; }
-  
   .crown-icon { font-size: 2.5rem; color: var(--gold-deep); line-height: 1; margin-bottom: 5px; text-shadow: 0 2px 10px rgba(228,179,74,0.6);}
   
   .name-small {
     font-family: 'Quicksand', sans-serif; font-weight: 700;
-    letter-spacing: 5px; font-size: 1.3rem; /* Made slightly larger to ensure it's clear */
+    letter-spacing: 5px; font-size: 1.3rem; 
     color: var(--jewel-deep); text-transform: uppercase;
   }
   
@@ -251,7 +273,6 @@
     margin-bottom: 15px; 
   }
   
-  /* Explicitly standard flow for captions so they never get hidden */
   .polaroid-cap {
     text-align: center;
     font-family: 'Caveat', cursive;
@@ -341,33 +362,34 @@
 <!-- Audio Element -->
 <audio id="bgMusic" src="celebration_background_music_no_copyright_music_free_music.m4a" loop playsinline></audio>
 
-<!-- Floating Butterflies -->
+<!-- Floating Background Butterflies -->
 <div class="butterflies">
-  <div class="butterfly">🦋</div>
-  <div class="butterfly">🦋</div>
-  <div class="butterfly">🦋</div>
-  <div class="butterfly">🦋</div>
-  <div class="butterfly">🦋</div>
+  <div class="bg-butterfly">🦋</div>
+  <div class="bg-butterfly">🦋</div>
+  <div class="bg-butterfly">🦋</div>
+  <div class="bg-butterfly">🦋</div>
+  <div class="bg-butterfly">🦋</div>
 </div>
 
 <!-- Pinned Music Button -->
 <button id="musicBtn" class="music-btn" aria-label="Toggle Music">🔇</button>
 
-<!-- Tap Hint -->
+<!-- Tap Hint (For firecrackers) -->
 <div id="tapHint" class="tap-hint">Tap anywhere to burst! 🎇</div>
 
 <!-- Firecracker Canvas -->
 <canvas id="fx"></canvas>
 
 <!-- ==========================================
-     START SCREEN (Instant Entry)
+     BUTTERFLY SWARM INTRO
      ========================================== -->
-<div id="startScreen">
-  <button class="start-btn" id="startBtn">Tap to Enter ✨</button>
+<div id="intro">
+  <div id="swarm-container"></div>
+  <div class="intro-hint" id="introHint">Tap the Magic 7 ✨</div>
 </div>
 
 <!-- ==========================================
-     BALLOON CURTAIN (Transition)
+     BALLOON CURTAIN
      ========================================== -->
 <div id="balloon-curtain"></div>
 
@@ -378,7 +400,6 @@
   
   <!-- HERO SECTION -->
   <section class="hero" id="hero-section">
-    
     <!-- Ribbons -->
     <div class="happy-bday-ribbon">HAPPY<br>BIRTHDAY</div>
     
@@ -402,32 +423,26 @@
   <!-- 5 IMAGE CARDS SECTION (Scrapbook Polaroids) -->
   <section class="container" id="photos-section">
     <div class="cards-grid">
-      
       <div class="polaroid fade-el">
         <img src="https://i.postimg.cc/fTRGj9yR/IMG-20260920-123253-992.jpg" alt="Hadeeqa Memory" loading="lazy" />
         <p class="polaroid-cap">Reaching for the stars ✨</p>
       </div>
-      
       <div class="polaroid fade-el">
         <img src="https://i.postimg.cc/VLkxBCvN/IMG-20260920-123250-177.jpg" alt="Hadeeqa Memory" loading="lazy" />
         <p class="polaroid-cap">A queen in her meadow 👑</p>
       </div>
-      
       <div class="polaroid fade-el">
         <img src="https://i.postimg.cc/FsHMgLzR/IMG-20260920-123248-081.jpg" alt="Hadeeqa Memory" loading="lazy" />
         <p class="polaroid-cap">Precious smiles 🦄</p>
       </div>
-      
       <div class="polaroid fade-el">
         <img src="https://i.postimg.cc/gk2CqZjn/IMG-20260920-123242-620.jpg" alt="Hadeeqa Memory" loading="lazy" />
         <p class="polaroid-cap">Best sister, best friend 💖</p>
       </div>
-      
       <div class="polaroid fade-el">
         <img src="https://i.postimg.cc/Hskq4ynn/IMG-20260920-123245-585.jpg" alt="Hadeeqa Memory" loading="lazy" />
         <p class="polaroid-cap">Pure golden magic 🌟</p>
       </div>
-
     </div>
   </section>
 
@@ -435,22 +450,18 @@
   <section class="container" id="videos-section">
     <h2 class="section-title fade-el">✨ Magical Moments</h2>
     <div class="video-grid">
-      
       <div class="video-wrapper fade-el">
         <video src="5_6161055535853478648.mp4" controls preload="metadata"></video>
         <p class="video-cap">🎬 Video 1</p>
       </div>
-      
       <div class="video-wrapper fade-el">
         <video src="5_6161055535853478650.mp4" controls preload="metadata"></video>
         <p class="video-cap">🎬 Video 2</p>
       </div>
-      
       <div class="video-wrapper fade-el">
         <video src="VID_20260920_123056_1.mp4" controls preload="metadata"></video>
         <p class="video-cap">🎬 Video 3</p>
       </div>
-
     </div>
   </section>
 
@@ -500,11 +511,10 @@
 
 <script>
   /* ============================================================
-     SHARE & AUDIO LOGIC
+     AUDIO TOGGLE LOGIC
      ============================================================ */
   const bgMusic = document.getElementById('bgMusic');
   const musicBtn = document.getElementById('musicBtn');
-  const shareBtn = document.getElementById('shareBtn');
   
   musicBtn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -518,6 +528,10 @@
     }
   });
 
+  /* ============================================================
+     SHARE LOGIC
+     ============================================================ */
+  const shareBtn = document.getElementById('shareBtn');
   shareBtn.addEventListener('click', async (e) => {
     e.stopPropagation();
     const shareData = {
@@ -534,46 +548,118 @@
   });
 
   /* ============================================================
-     FAST INTRO & BALLOON CURTAIN
+     BUTTERFLY SWARM GENERATOR (The "7")
      ============================================================ */
-  const startScreen = document.getElementById('startScreen');
-  const startBtn = document.getElementById('startBtn');
+  const swarmContainer = document.getElementById('swarm-container');
+  const intro = document.getElementById('intro');
+  const introHint = document.getElementById('introHint');
   const main = document.getElementById('main');
   const balloonCurtain = document.getElementById('balloon-curtain');
   const tapHint = document.getElementById('tapHint');
 
-  startBtn.addEventListener('click', () => {
-    // 1. Hide start screen
-    startScreen.style.opacity = '0';
-    setTimeout(() => { startScreen.style.display = 'none'; }, 500);
+  // Generate butterflies in a '7' shape
+  function createSwarm() {
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2 - 30; // Center offset
     
-    // 2. Play Audio
+    const numTop = 15;
+    const numDiag = 30;
+    
+    // Top bar of the '7'
+    for(let i=0; i<numTop; i++) {
+      let t = i / numTop;
+      let x = (cx - 40) + (t * 100);
+      let y = cy - 70;
+      spawnSwarmButterfly(x, y);
+    }
+    
+    // Diagonal bar of the '7'
+    for(let i=0; i<numDiag; i++) {
+      let t = i / numDiag;
+      let x = (cx + 60) - (t * 80);
+      let y = (cy - 70) + (t * 160);
+      spawnSwarmButterfly(x, y);
+    }
+  }
+
+  function spawnSwarmButterfly(baseX, baseY) {
+    const b = document.createElement('div');
+    b.className = 'swarm-butterfly';
+    b.innerHTML = '🦋';
+    
+    // Jitter for organic look
+    const jx = (Math.random() - 0.5) * 30;
+    const jy = (Math.random() - 0.5) * 30;
+    
+    b.style.setProperty('--x', (baseX + jx) + 'px');
+    b.style.setProperty('--y', (baseY + jy) + 'px');
+    
+    // Scatter vectors
+    const angle = Math.random() * Math.PI * 2;
+    const dist = window.innerWidth * (0.8 + Math.random() * 0.5);
+    b.style.setProperty('--tx', (Math.cos(angle) * dist) + 'px');
+    b.style.setProperty('--ty', (Math.sin(angle) * dist) + 'px');
+    b.style.setProperty('--trot', ((Math.random() - 0.5) * 720) + 'deg');
+    
+    b.style.fontSize = (1.5 + Math.random() * 1.5) + 'rem';
+    b.style.animationDelay = (Math.random() * 0.5) + 's';
+    
+    swarmContainer.appendChild(b);
+  }
+
+  // Initialize Swarm
+  window.addEventListener('load', () => {
+    createSwarm();
+  });
+
+  /* ============================================================
+     TAP TO SCATTER & ENTER
+     ============================================================ */
+  let introTriggered = false;
+
+  intro.addEventListener('click', () => {
+    if(introTriggered) return;
+    introTriggered = true;
+    
+    // 1. Play Music
     bgMusic.muted = false;
     bgMusic.play().then(() => { 
       musicBtn.innerHTML = '🎵'; 
-      musicBtn.style.display = 'flex'; // Show pinned music button
+      musicBtn.style.display = 'flex';
     }).catch(e => console.log(e));
 
-    // 3. Launch balloons immediately
-    launchBalloons();
+    // 2. Hide Hint
+    introHint.style.opacity = '0';
 
-    // 4. Reveal main page smoothly while balloons are flying up
+    // 3. Scatter Butterflies
+    const butterflies = document.querySelectorAll('.swarm-butterfly');
+    butterflies.forEach(b => b.classList.add('scatter'));
+
+    // 4. Launch balloon curtain slightly after scatter
     setTimeout(() => {
+      launchBalloons();
+    }, 600);
+
+    // 5. Fade out intro & Reveal Main
+    setTimeout(() => {
+      intro.style.opacity = '0';
       main.classList.add('show');
       document.body.classList.remove('locked');
       
-      // Auto firecrackers
+      // Auto trigger firecrackers
       setTimeout(() => {
         firecracker(window.innerWidth/2, window.innerHeight*0.3);
         firecracker(window.innerWidth*0.3, window.innerHeight*0.6);
         firecracker(window.innerWidth*0.7, window.innerHeight*0.6);
         tapHint.classList.add('show');
-      }, 300);
+      }, 500);
 
-      // Clean up balloons to save memory
+      // Clean up DOM
+      setTimeout(() => { intro.style.display = 'none'; }, 1000);
       setTimeout(() => { balloonCurtain.style.display = 'none'; }, 3000);
       setTimeout(() => { tapHint.classList.remove('show'); }, 6000);
-    }, 600);
+      
+    }, 1200);
   });
 
   function launchBalloons() {
@@ -659,8 +745,10 @@
   }
   renderFX();
 
+  // Burst on document tap (ignoring buttons)
   document.addEventListener('click', (e) => {
-    if (e.target.closest('.control-btn') || e.target.tagName === 'VIDEO' || e.target.id === 'startBtn' || e.target.id === 'shareBtn') return;
+    if (!introTriggered) return; // Don't trigger firecrackers on the intro screen
+    if (e.target.closest('.control-btn') || e.target.tagName === 'VIDEO' || e.target.id === 'shareBtn') return;
     tapHint.classList.remove('show');
     firecracker(e.clientX, e.clientY);
   });
