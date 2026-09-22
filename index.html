@@ -16,7 +16,7 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Great+Vibes&family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Caveat:wght@600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Caveat:wght@600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
 
 <style>
   /* ============================================================
@@ -227,23 +227,29 @@
     text-align: center; padding: 60px 20px 20px;
   }
 
-  /* Premium Princess Header */
+  /* FROSTED GLASS PILL HEADER */
   .princess-header-wrapper {
     position: relative;
     margin-bottom: 40px;
-    padding: 0 20px;
+    padding: 15px 45px;
     display: inline-block;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 100px;
+    box-shadow: 0 15px 35px rgba(139, 95, 191, 0.25), inset 0 0 20px rgba(255, 255, 255, 0.7);
   }
   .princess-header {
-    font-family: 'Great Vibes', cursive;
-    font-size: clamp(4rem, 15vw, 6rem);
+    font-family: 'Berkshire Swash', cursive;
+    font-size: clamp(2.5rem, 10vw, 4rem);
     background: linear-gradient(to right, #C9932E, #F6DFA0, #E4B34A, #F6DFA0, #C9932E);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: goldShine 4s linear infinite;
-    filter: drop-shadow(0 4px 15px rgba(228, 179, 74, 0.4));
-    line-height: 1;
+    filter: drop-shadow(0 2px 5px rgba(228, 179, 74, 0.4));
+    line-height: 1.1;
     margin: 0;
   }
   @keyframes goldShine { to { background-position: 200% center; } }
@@ -252,12 +258,12 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 2rem;
-    color: var(--gold-light);
+    font-size: 1.6rem;
+    color: var(--gold-deep);
     animation: twinkle 1.5s infinite alternate;
   }
-  .sparkle-left { left: -10px; }
-  .sparkle-right { right: -10px; animation-direction: alternate-reverse;}
+  .sparkle-left { left: 15px; }
+  .sparkle-right { right: 15px; animation-direction: alternate-reverse;}
 
   .hero-img {
     width: 100%; max-width: 320px; aspect-ratio: 3/4; object-fit: cover;
@@ -270,7 +276,7 @@
 
   .hero-names { margin-bottom: 20px; }
   
-  .crown-icon { font-size: 2.8rem; color: var(--gold-deep); line-height: 1; margin-bottom: 5px; text-shadow: 0 2px 10px rgba(228,179,74,0.6);}
+  .crown-icon { font-size: 2.5rem; color: var(--gold-deep); line-height: 1; margin-bottom: 5px; text-shadow: 0 2px 10px rgba(228,179,74,0.6);}
   
   .name-small {
     font-family: 'Quicksand', sans-serif; font-weight: 700;
@@ -450,9 +456,8 @@
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
   }
   .message-box.in-view { opacity: 1; transform: translateY(0); }
-  .message-box h3 { font-family: 'Berkshire Swash', cursive; font-size: 2.2rem; color: var(--jewel-deep); margin-bottom: 5px; }
-  .message-box p.bday-wish { font-size: 1.6rem; color: #FF6B8B; font-family: 'Berkshire Swash', cursive; margin-bottom: 15px; margin-top: 0;}
-  .message-box p.msg-body { font-size: 1.2rem; font-weight: 600; line-height: 1.6; }
+  .message-box h3 { font-family: 'Berkshire Swash', cursive; font-size: 2.2rem; color: var(--jewel-deep); margin-bottom: 15px; }
+  .message-box p { font-size: 1.2rem; font-weight: 600; }
 
   /* --- HIGH-CONTRAST SHARE SECTION --- */
   .share-container { padding: 20px 20px 60px; }
@@ -476,6 +481,7 @@
   .share-btn:active { transform: scale(0.95); }
 
   footer { text-align: center; padding: 0 20px 80px; color: var(--jewel-deep); font-size: 1rem; font-weight: 700; }
+  footer h2 { font-family: 'Berkshire Swash', cursive; font-size: 2.2rem; margin-bottom: 10px; }
   
   /* Tap hint (For Firecrackers) */
   .tap-hint {
@@ -542,9 +548,9 @@
   
   <!-- HERO SECTION -->
   <section class="hero" id="hero-section">
-    <!-- Premium Princess Header -->
+    <!-- Premium Princess Header (Frosted Glass Pill) -->
     <div class="princess-header-wrapper">
-      <h1 class="princess-header happy-birthday-script">
+      <h1 class="princess-header">
         <span class="sparkle-left">✨</span>
         Happy Birthday
         <span class="sparkle-right">✨</span>
@@ -654,9 +660,8 @@
   <!-- SHORT WISHING MESSAGE -->
   <section class="container" id="message-section">
     <div class="message-box fade-el">
-      <h3>Dear Hadeeqa,</h3>
-      <p class="bday-wish">Happy 7th Birthday! 🦄✨</p>
-      <p class="msg-body">Keep shining, keep smiling, and never lose your magical spark. We love you to the moon and back! 💜</p>
+      <h3 style="font-family: 'Berkshire Swash', cursive;">✨ Happy 7th Birthday! ✨</h3>
+      <p>Keep shining, keep smiling, and never lose your magical spark. We love you to the moon and back! 💜</p>
     </div>
   </section>
 
@@ -669,7 +674,8 @@
   </section>
 
   <footer>
-    <p>Made with 💜 for Hadeeqa</p>
+    <h2>Dear Hadeeqa,</h2>
+    <p>Made with 💜 for you</p>
   </footer>
 
 </div>
@@ -728,9 +734,10 @@
   });
 
   /* ============================================================
-     VIDEO PLAY LOGIC (Smart Pause)
+     VIDEO PLAY LOGIC (Smart Pause & Auto-Resume)
      ============================================================ */
   const allVideos = document.querySelectorAll('video');
+  let wasMusicPlayingBeforeVideo = false;
 
   function playVideo(overlayElement) {
     const videoElement = overlayElement.nextElementSibling;
@@ -739,20 +746,38 @@
     videoElement.play();
   }
 
-  // If one video plays, pause all others AND pause background music
+  // Handle Video Interactions
   allVideos.forEach(vid => {
     vid.addEventListener('play', () => {
-      // Pause other videos
+      // 1. Pause other videos
       allVideos.forEach(otherVid => {
         if (otherVid !== vid) otherVid.pause();
       });
-      // Pause background music so it doesn't overlap
+      // 2. Auto-pause background music
       if (isPlayingMusic) {
+        wasMusicPlayingBeforeVideo = true;
         bgMusic.pause();
         musicBtn.innerHTML = '🔇';
         isPlayingMusic = false;
       }
     });
+
+    // Handle pause or end to auto-resume music
+    const resumeMusic = () => {
+      // Check if ANY video is currently playing
+      const isAnyVideoPlaying = Array.from(allVideos).some(v => !v.paused && !v.ended);
+      
+      // Only resume if NO video is playing AND music was playing previously
+      if (!isAnyVideoPlaying && wasMusicPlayingBeforeVideo) {
+        bgMusic.play().catch(e => console.log(e));
+        musicBtn.innerHTML = '🎵';
+        isPlayingMusic = true;
+        wasMusicPlayingBeforeVideo = false; // Reset the state
+      }
+    };
+
+    vid.addEventListener('pause', resumeMusic);
+    vid.addEventListener('ended', resumeMusic);
   });
 
   /* ============================================================
